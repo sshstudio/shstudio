@@ -9,7 +9,8 @@ class MainScreen extends StatelessWidget {
       body: SafeArea(
         child: Row(
           children: [
-            Expanded(
+            Container(
+              width: 200,
               child: TreeList(),
             ),
             Expanded(
