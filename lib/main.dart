@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dartssh/client.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sshstudio/screen/main_screen.dart';
 import 'package:xterm/flutter.dart';
 import 'package:xterm/xterm.dart';
@@ -10,8 +13,20 @@ const host = 'ssh://localhost:22';
 const username = 'test';
 const password = 'test';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+
+  await DotEnv().load('.env');
+  final sentry = SentryClient(dsn: DotEnv().env['SENTRY_DSN']);
+
+  runZonedGuarded(
+    () => runApp(MyApp()),
+    (error, stackTrace) async {
+      await sentry.captureException(
+        exception: error,
+        stackTrace: stackTrace,
+      );
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,9 +42,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
