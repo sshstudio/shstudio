@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/connections.dart';
 import 'package:sshstudio/models/server.dart';
+import 'package:sshstudio/widgets/ssh_terminal.dart';
 
 import '../main.dart';
 
@@ -17,10 +18,10 @@ class _TabbedAreaState extends State<TabbedArea> with SingleTickerProviderStateM
       stream: connectionsListener.onChange,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data.connections.length < 1) {
-          return Center(child: Text('select server to connect'),) ;
+          return Center(child: Text('select server to connect', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),) ;
         }
         return DefaultTabController(
-            initialIndex: 0,
+            initialIndex: snapshot.data.connections.length - 1,
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
               Container(
                 child: TabBar(
@@ -62,7 +63,7 @@ class _TabbedAreaState extends State<TabbedArea> with SingleTickerProviderStateM
   List<Widget> _tabsContent(Connections pool) {
     return pool == null ? [] : pool.connections.entries.map((MapEntry<String, Server> entry) => Container(
       child: Center(
-        child: Text('Display Tab '+entry.value.id.toString(), style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        child: SshTerminal(entry.value),
       ),
     )).toList();
 
