@@ -17,7 +17,7 @@ class _TabbedAreaState extends State<TabbedArea> with SingleTickerProviderStateM
       stream: connectionsListener.onChange,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data.connections.length < 1) {
-          return Text('select server to connect');
+          return Center(child: Text('select server to connect'),) ;
         }
         return DefaultTabController(
             initialIndex: 0,
