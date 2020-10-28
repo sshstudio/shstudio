@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sshstudio/main.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/models/server_folder.dart';
 import 'package:tree_view/tree_view.dart';
@@ -53,7 +54,7 @@ class _TreeListState extends State<TreeList> {
       return folders.map((ServerFolder folder) {
         List<Widget> servers = [];
         for (Server server in folder.servers) {
-          servers.add(_server(server.title, 25));
+          servers.add(_server(server, 25));
         }
 
         return Parent(
@@ -78,7 +79,7 @@ class _TreeListState extends State<TreeList> {
     );
   }
 
-  Widget _server(String title, double padding) {
+  Widget _server(Server server, double padding) {
     return MouseRegion(
       cursor: SystemMouseCursors.contextMenu,
       child: Padding(
@@ -86,7 +87,12 @@ class _TreeListState extends State<TreeList> {
         child: Row(
           children: [
             Icon(Icons.computer),
-            Text(title),
+            FlatButton(
+                child: Text(server.title),
+              onPressed: () {
+                  connectionsPool.openConnection(server);
+              },
+            ),
           ],
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sshstudio/widgets/atbbed_area.dart';
+import 'package:sshstudio/widgets/tabbed_area.dart';
 import 'package:sshstudio/widgets/tree_list.dart';
 
 class MainScreen extends StatelessWidget {
