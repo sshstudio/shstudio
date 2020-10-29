@@ -22,6 +22,7 @@ class Connections {
   }
 
   Future closeConnection(String id) {
+    connections[id].connection.closeShell();
     connections.remove(id);
     connectionsListener.onChange.value = this;
   }

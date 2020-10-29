@@ -310,6 +310,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0-nullsafety.2"
+  ssh:
+    dependency: "direct main"
+    description:
+      name: ssh
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.7"
   stack_trace:
     dependency: transitive
     description:
