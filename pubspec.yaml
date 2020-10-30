@@ -24,14 +24,15 @@ dependencies:
   flutter:
     sdk: flutter
   xterm: ^1.1.1+1
-  dartssh: ^1.0.3+3
+#  dartssh: ^1.0.3+3
   tree_view: ^0.0.5
   path_provider: ^1.6.22
   sentry: ">=3.0.0 <4.0.0"
   flutter_dotenv: ^2.1.0
   rxdart: ^0.24.1
   uuid: ^2.2.2
-  ssh: ^0.0.7
+  ssh_plugin:
+    path: ../ssh_plugin
 
 
   # The following adds the Cupertino Icons font to your application.

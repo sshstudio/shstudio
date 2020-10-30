@@ -22,7 +22,6 @@ class ServerFolder {
       List l = e['servers'];
       List<Server> servers = l.map((server) {
         var s = Server.fromJson(server);
-        print(s.title);
         return s;
       }).toList();
       var folder = ServerFolder();

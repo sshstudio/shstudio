@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ssh/ssh.dart' as ssh;
+import 'package:ssh_plugin/ssh_plugin.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:xterm/frontend/terminal_view.dart';
 import 'package:xterm/xterm.dart';
@@ -19,7 +19,7 @@ class SshTerminal extends StatefulWidget {
 
 class _SshTerminalState extends State<SshTerminal> {
   Terminal terminal;
-  ssh.SSHClient client;
+  SSHClient client;
   final Server  server;
 
 
@@ -33,12 +33,12 @@ class _SshTerminalState extends State<SshTerminal> {
   }
 
   Future<void> connect() async {
-    client = new ssh.SSHClient(
+    client = new SSHClient(
       host: server.url,
       port: server.port,
       username: server.login,
-      passwordOrKey: server.key == null ? server.password : {
-        "privateKey": server.key,
+      passwordOrKey: server.key == null ? server.password :{
+        "privateKey": server.getKeyOrPassword(),
       },
     );
 

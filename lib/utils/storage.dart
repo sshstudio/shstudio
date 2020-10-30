@@ -10,7 +10,7 @@ class Storage {
   }
 
   static Future<List<ServerFolder>> getServers() {
-    return getSettingsDir().then((dirName) {
+    return getApplicationSupportDirectory().then((dirName) {
       var file = dirName.path + Platform.pathSeparator + 'servers.json';
       File fd = File(file);
       return fd.exists().then((exist) async {

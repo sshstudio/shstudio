@@ -1,6 +1,6 @@
+import 'dart:io';
 
-import 'package:ssh/ssh.dart' as ssh;
-
+import 'package:ssh_plugin/ssh_plugin.dart';
 
 class Server {
   int id;
@@ -13,12 +13,20 @@ class Server {
 
   String key;
 
-  ssh.SSHClient connection;
+  String getKeyOrPassword() {
+    if (key != null) {
+      File file = File(key);
+      return file.readAsStringSync();
+    }
+
+    return password;
+  }
+
+  SSHClient connection;
 
   Server(this.id, this.title, this.url, this.login, this.password);
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
         'url': url,
@@ -31,6 +39,6 @@ class Server {
         title = json['title'],
         url = json['url'],
         login = json['login'],
-        password = json['password']
-  ;
+        password = json['password'],
+        key = json['key'];
 }
