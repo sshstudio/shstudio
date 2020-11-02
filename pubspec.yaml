@@ -32,7 +32,8 @@ dependencies:
   rxdart: ^0.24.1
   uuid: ^2.2.2
   ssh_plugin:
-    path: ../ssh_plugin
+    git:
+      url: git://github.com/fgh151/ssh_plugin.git
 
 
   # The following adds the Cupertino Icons font to your application.

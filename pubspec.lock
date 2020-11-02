@@ -285,9 +285,11 @@ packages:
   ssh_plugin:
     dependency: "direct main"
     description:
-      path: "../ssh_plugin"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "65063e394367fdd2216ede7679bd9d88688b6efe"
+      url: "git://github.com/fgh151/ssh_plugin.git"
+    source: git
     version: "0.0.2"
   stack_trace:
     dependency: transitive
