@@ -6,10 +6,6 @@ import 'package:sentry/sentry.dart';
 import 'package:sshstudio/models/connections.dart';
 import 'package:sshstudio/screen/main_screen.dart';
 
-const host = 'ssh://localhost:22';
-const username = 'test';
-const password = 'test';
-
 Connections connectionsPool = Connections();
 final ConnectionsListener connectionsListener  = ConnectionsListener(connectionsPool);
 
