@@ -22,16 +22,6 @@ class ServerFolder {
     return folder;
   }
 
-  factory ServerFolder.demo() {
-    var folder = ServerFolder();
-    folder.title = 'Test';
-    folder.servers = [
-      new Server('1', 'name of server', 'ya.ru', 'ya', 'ru'),
-      new Server('2', 's2', 'ya.ru', 'ya', 'ru'),
-    ];
-    return folder;
-  }
-
   static List<ServerFolder> fromJson(List<dynamic> json) {
     var uuid = Uuid();
     return json.map((e) {
@@ -61,10 +51,7 @@ class ServerFolder {
   }
 
   static List<ServerFolder> getDemo() {
-    return [
-      ServerFolder.demo(),
-      ServerFolder.demo(),
-    ];
+    return [];
   }
 
   static Future<List<ServerFolder>> save(List<ServerFolder> list) {
