@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:ssh_plugin/ssh_plugin.dart';
 
 class Server {
-  int id;
+  String id;
   String title;
   String url;
   String login;

@@ -26,8 +26,8 @@ class ServerFolder {
     var folder = ServerFolder();
     folder.title = 'Test';
     folder.servers = [
-      new Server(1, 'name of server', 'ya.ru', 'ya', 'ru'),
-      new Server(2, 's2', 'ya.ru', 'ya', 'ru'),
+      new Server('1', 'name of server', 'ya.ru', 'ya', 'ru'),
+      new Server('2', 's2', 'ya.ru', 'ya', 'ru'),
     ];
     return folder;
   }
