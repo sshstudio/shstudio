@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/utils/storage.dart';
+
+
 
 class ServerFolder {
   String title;
   List<Server> servers = [];
 
   ServerFolder();
+
+  static List<ServerFolder> structure = [];
 
   factory ServerFolder.root() {
     ServerFolder folder = new ServerFolder();
@@ -44,7 +50,8 @@ class ServerFolder {
 
   static Future<List<ServerFolder>> getList() {
     return Storage.getServers().then((List<ServerFolder> value) {
-      return value == null ? getDemo() : value;
+      structure = value == null ? getDemo() : value;
+      return structure;
     }).catchError((onError) => getDemo());
   }
 
@@ -53,5 +60,12 @@ class ServerFolder {
       ServerFolder.demo(),
       ServerFolder.demo(),
     ];
+  }
+
+  static Future<List<ServerFolder>> save(List<ServerFolder> list) {
+    return Storage.saveServers(jsonEncode(list)).then((List<ServerFolder> value) {
+      structure = value == null ? getDemo() : value;
+      return structure;
+    }).catchError((onError) => getDemo());
   }
 }
