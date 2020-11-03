@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/utils/storage.dart';
+import 'package:uuid/uuid.dart';
 
 
 
 class ServerFolder {
+  String id;
   String title;
   List<Server> servers = [];
+
 
   ServerFolder();
 
@@ -30,6 +33,7 @@ class ServerFolder {
   }
 
   static List<ServerFolder> fromJson(List<dynamic> json) {
+    var uuid = Uuid();
     return json.map((e) {
       List l = e['servers'];
       List<Server> servers = l.map((server) {
@@ -38,6 +42,7 @@ class ServerFolder {
       }).toList();
       var folder = ServerFolder();
       folder.title = e['title'];
+      folder.id = e['id'] == null ? uuid.v4().toString() : e['id'];
       folder.servers = servers;
       return folder;
     }).toList();
