@@ -68,7 +68,7 @@ class _TreeListState extends State<TreeList> {
       padding: EdgeInsets.only(left: padding),
       child: Row(
         children: [
-          Icon(Icons.folder),
+          Icon(Icons.folder, color: Color.fromRGBO(17, 63, 134, 1)),
           Text(folder.title),
 
           PopupMenuButton(
@@ -128,7 +128,7 @@ class _TreeListState extends State<TreeList> {
         padding: EdgeInsets.only(left: padding),
         child: Row(
           children: [
-            Icon(Icons.computer),
+            Icon(Icons.computer, color: Color.fromRGBO(35, 147, 239, 1)),
             GestureDetector(
               onTap: () {
                 connectionsPool.openConnection(server);
