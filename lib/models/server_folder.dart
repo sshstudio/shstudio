@@ -7,6 +7,12 @@ class ServerFolder {
 
   ServerFolder();
 
+  factory ServerFolder.root() {
+    ServerFolder folder = new ServerFolder();
+    folder.title = 'root';
+    return folder;
+  }
+
   factory ServerFolder.demo() {
     var folder = ServerFolder();
     folder.title = 'Test';

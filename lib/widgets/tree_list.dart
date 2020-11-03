@@ -3,7 +3,9 @@ import 'package:flutter/rendering.dart';
 import 'package:sshstudio/main.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/models/server_folder.dart';
-import 'package:tree_view/tree_view.dart';
+import 'package:sshstudio/widgets/add_folder_window.dart';
+import 'package:sshstudio/widgets/add_server_window.dart';
+import 'package:sshstudio/widgets/tree_view.dart';
 
 class TreeList extends StatefulWidget {
   @override
@@ -16,9 +18,13 @@ class _TreeListState extends State<TreeList> {
   List<Widget> structure;
 
   _TreeListState() {
+    _fetchData();
+  }
+
+  void _fetchData() {
     _structure().then((val) => setState(() {
-          structure = val;
-        }));
+      structure = val;
+    }));
   }
 
   @override
@@ -27,7 +33,7 @@ class _TreeListState extends State<TreeList> {
       hasScrollBar: true,
       parentList: [
         Parent(
-          parent: _folder('root', 5),
+          parent: _folder(ServerFolder.root(), 5, isRoot: true),
           childList: ChildList(
             children: structure,
           ),
@@ -45,7 +51,10 @@ class _TreeListState extends State<TreeList> {
         }
 
         return Parent(
-          parent: _folder(folder.title, 15.0),
+          callback: (isSelected) {
+            print('tap ' + folder.title);
+          },
+          parent: _folder(folder, 15.0),
           childList: ChildList(
             children: servers,
           ),
@@ -54,13 +63,55 @@ class _TreeListState extends State<TreeList> {
     });
   }
 
-  Widget _folder(String title, double padding) {
+  Widget _folder(ServerFolder folder, double padding, {isRoot = false}) {
     return Padding(
       padding: EdgeInsets.only(left: padding),
       child: Row(
         children: [
           Icon(Icons.folder),
-          Text(title),
+          Text(folder.title),
+
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return [
+                isRoot ? null : PopupMenuItem<String>(
+                  // value: 't',
+                  child: GestureDetector(
+                      onTap: () {
+                        print('remove ' + folder.title);
+                        _fetchData();
+                      },
+                      child: Text('remove')),
+                ),
+                isRoot ? PopupMenuItem<String>(
+                  // value: 't',
+                  child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AddFolderWindow();
+                            });
+
+                      },
+                      child: Text('add folder')),
+                ) : null,
+                isRoot ? null : PopupMenuItem<String>(
+                  // value: 't',
+                  child: GestureDetector(
+                      onTap: () {
+
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AddServerWindow();
+                            });
+                      },
+                      child: Text('add server')),
+                ),
+              ];
+            },
+          ),
         ],
       ),
     );
@@ -74,12 +125,26 @@ class _TreeListState extends State<TreeList> {
         child: Row(
           children: [
             Icon(Icons.computer),
-            FlatButton(
-                child: Text(server.title),
-              onPressed: () {
-                  connectionsPool.openConnection(server);
+            GestureDetector(
+              onTap: () {
+                connectionsPool.openConnection(server);
               },
+              child: Text(server.title),
             ),
+            PopupMenuButton(
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem<String>(
+                    // value: 't',
+                    child: GestureDetector(
+                        onTap: () {
+                          print('remove ' + server.title);
+                        },
+                        child: Text('remove')),
+                  )
+                ];
+              },
+            )
           ],
         ),
       ),
