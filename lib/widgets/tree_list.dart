@@ -108,7 +108,7 @@ class _TreeListState extends State<TreeList> {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AddServerWindow();
+                              return AddServerWindow(folder.id);
                             });
                       },
                       child: Text('add server')),

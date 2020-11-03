@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ssh_plugin/ssh_plugin.dart';
+import 'package:sshstudio/models/server_folder.dart';
 
 class Server {
   String id;
@@ -24,14 +25,17 @@ class Server {
 
   SSHClient connection;
 
-  Server(this.id, this.title, this.url, this.login, this.password);
+  Server(this.id, this.title, this.url, this.login, this.password,
+      {this.port = 22, this.key});
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
         'url': url,
         'login': login,
-        'password': password
+        'password': password,
+        'port': port,
+        'key': key,
       };
 
   Server.fromJson(Map<String, dynamic> json)
@@ -40,5 +44,16 @@ class Server {
         url = json['url'],
         login = json['login'],
         password = json['password'],
+        port = json['port'],
         key = json['key'];
+
+  void saveToFolder(String folderId) {
+    for (final folder in ServerFolder.structure) {
+      if(folder.id == folderId) {
+        folder.servers.add(this);
+        ServerFolder.save(ServerFolder.structure);
+        break;
+      }
+    }
+  }
 }

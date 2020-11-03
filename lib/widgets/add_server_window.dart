@@ -1,8 +1,8 @@
-import 'dart:html';
 
 import 'package:file_chooser/file_chooser.dart';
 import 'package:flutter/material.dart';
-
+import 'package:sshstudio/models/server.dart';
+import 'package:uuid/uuid.dart';
 
 class _FormData {
   String id;
@@ -10,13 +10,15 @@ class _FormData {
   String url;
   String login;
   String password;
-
   int port = 22;
-
   String key;
 }
 
 class AddServerWindow extends StatelessWidget {
+  final String folderId;
+
+  AddServerWindow(this.folderId);
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -66,6 +68,23 @@ class AddServerWindow extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: '22',
+                    decoration: InputDecoration(
+                      hintText: 'New server port',
+                      filled: true,
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Port cant be blank';
+                      }
+                      data.url = value;
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextFormField(
                     decoration: InputDecoration(
                       hintText: 'New server login',
                       filled: true,
@@ -95,15 +114,14 @@ class AddServerWindow extends StatelessWidget {
                     },
                   ),
                 ),
-
                 RaisedButton(
                   onPressed: () =>
                   {
-                    showOpenPanel(canSelectDirectories: false,
+                    showOpenPanel(
+                        canSelectDirectories: false,
                         allowsMultipleSelection: false)
                         .then((FileChooserResult value) =>
-                    data.key = value.paths[0]
-                    )
+                    data.key = value.paths[0])
                   },
                   child: Text("Open file picker"),
                 ),
@@ -125,6 +143,15 @@ class AddServerWindow extends StatelessWidget {
                       child: RaisedButton(
                         child: Text("Close"),
                         onPressed: () {
+                          Server(
+                              (new Uuid()).v4(),
+                              data.title,
+                              data.url,
+                              data.login,
+                              data.password
+                          )
+                            ..saveToFolder(folderId);
+
                           Navigator.of(context).pop();
                           // if (_formKey.currentState.validate()) {
                           //   _formKey.currentState.save();
@@ -141,5 +168,4 @@ class AddServerWindow extends StatelessWidget {
       ),
     );
   }
-
 }
