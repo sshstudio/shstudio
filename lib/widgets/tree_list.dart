@@ -23,6 +23,7 @@ class _TreeListState extends State<TreeList> {
 
   void _fetchData() {
     _structure().then((val) => setState(() {
+      print(val);
       structure = val;
     }));
   }
@@ -44,9 +45,13 @@ class _TreeListState extends State<TreeList> {
 
   Future<List<Widget>> _structure() async {
     return ServerFolder.getList().then((List<ServerFolder> folders) {
+
       return folders.map((ServerFolder folder) {
         List<Widget> servers = [];
         for (Server server in folder.servers) {
+
+          print(server.url);
+
           servers.add(_server(server, 25));
         }
 
@@ -75,7 +80,7 @@ class _TreeListState extends State<TreeList> {
             itemBuilder: (BuildContext context) {
               return [
                 isRoot ? null : PopupMenuItem<String>(
-                  // value: 't',
+                  value: 'remove ' + folder.title,
                   child: GestureDetector(
                       onTap: () {
                         print('remove ' + folder.title);
@@ -88,7 +93,7 @@ class _TreeListState extends State<TreeList> {
                       child: Text('remove')),
                 ),
                 isRoot ? PopupMenuItem<String>(
-                  // value: 't',
+                  value: 'add folder to ' + folder.title,
                   child: GestureDetector(
                       onTap: () {
                         showDialog(
@@ -101,7 +106,7 @@ class _TreeListState extends State<TreeList> {
                       child: Text('add folder')),
                 ) : null,
                 isRoot ? null : PopupMenuItem<String>(
-                  // value: 't',
+                  value: 'add server to ' + folder.title,
                   child: GestureDetector(
                       onTap: () {
 
@@ -139,7 +144,7 @@ class _TreeListState extends State<TreeList> {
               itemBuilder: (BuildContext context) {
                 return [
                   PopupMenuItem<String>(
-                    // value: 't',
+                    value: 'remove ' + server.title,
                     child: GestureDetector(
                         onTap: () {
                           print('remove ' + server.title);

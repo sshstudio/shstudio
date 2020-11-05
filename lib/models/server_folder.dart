@@ -41,6 +41,7 @@ class ServerFolder {
   Map<String, dynamic> toJson() => {
         'title': title,
         'servers': servers,
+        'id': id
       };
 
   static Future<List<ServerFolder>> getList() {

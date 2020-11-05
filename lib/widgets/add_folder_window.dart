@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server_folder.dart';
+import 'package:uuid/uuid.dart';
 
 class _FormData {
   String name;
@@ -49,7 +50,7 @@ class AddFolderWindow extends StatelessWidget {
                           if (_formKey.currentState.validate()) {
                             var folder = ServerFolder();
                             folder.title = data.name;
-
+                            folder.id = (Uuid()).v4();
                             ServerFolder.structure.add(folder);
                             ServerFolder.save(ServerFolder.structure);
 

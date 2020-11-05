@@ -38,14 +38,10 @@ class Server {
         'key': key,
       };
 
-  Server.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        title = json['title'],
-        url = json['url'],
-        login = json['login'],
-        password = json['password'],
-        port = json['port'],
-        key = json['key'];
+  factory Server.fromJson(Map<String, dynamic> json) {
+    return Server(json['id'], json['title'], json['url'], json['login'], json['password'], port: json['port'], key: json['key']);
+  }
+
 
   void saveToFolder(String folderId) {
     for (final folder in ServerFolder.structure) {
