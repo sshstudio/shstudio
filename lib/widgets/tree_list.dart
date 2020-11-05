@@ -113,7 +113,7 @@ class _TreeListState extends State<TreeList> {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AddServerWindow(folder.id);
+                              return AddServerWindow(folder.id, _fetchData);
                             });
                       },
                       child: Text('add server')),
@@ -147,7 +147,11 @@ class _TreeListState extends State<TreeList> {
                     value: 'remove ' + server.title,
                     child: GestureDetector(
                         onTap: () {
-                          print('remove ' + server.title);
+                          ServerFolder.structure.map((folder){
+                            folder.servers.removeWhere((element) => element.id == server.id);
+                          });
+                          ServerFolder.save(ServerFolder.structure);
+                          _fetchData();
                         },
                         child: Text('remove')),
                   )

@@ -17,7 +17,9 @@ class _FormData {
 class AddServerWindow extends StatelessWidget {
   final String folderId;
 
-  AddServerWindow(this.folderId);
+  final onSuccess;
+
+  AddServerWindow(this.folderId, this.onSuccess);
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +135,17 @@ class AddServerWindow extends StatelessWidget {
                         child: Text("Add"),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
+                            Server(
+                                (new Uuid()).v4(),
+                                data.title,
+                                data.url,
+                                data.login,
+                                data.password
+                            )
+                              ..saveToFolder(folderId);
+
+                            onSuccess();
+
                             Navigator.of(context).pop();
                           }
                         },
@@ -143,14 +156,6 @@ class AddServerWindow extends StatelessWidget {
                       child: RaisedButton(
                         child: Text("Close"),
                         onPressed: () {
-                          Server(
-                              (new Uuid()).v4(),
-                              data.title,
-                              data.url,
-                              data.login,
-                              data.password
-                          )
-                            ..saveToFolder(folderId);
 
                           Navigator.of(context).pop();
                           // if (_formKey.currentState.validate()) {
