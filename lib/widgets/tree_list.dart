@@ -23,7 +23,6 @@ class _TreeListState extends State<TreeList> {
 
   void _fetchData() {
     _structure().then((val) => setState(() {
-      print(val);
       structure = val;
     }));
   }
@@ -49,9 +48,6 @@ class _TreeListState extends State<TreeList> {
       return folders.map((ServerFolder folder) {
         List<Widget> servers = [];
         for (Server server in folder.servers) {
-
-          print(server.url);
-
           servers.add(_server(server, 25));
         }
 
@@ -147,10 +143,14 @@ class _TreeListState extends State<TreeList> {
                     value: 'remove ' + server.title,
                     child: GestureDetector(
                         onTap: () {
-                          ServerFolder.structure.map((folder){
-                            folder.servers.removeWhere((element) => element.id == server.id);
-                          });
-                          ServerFolder.save(ServerFolder.structure);
+                          var struct = ServerFolder.structure;
+                          for (ServerFolder currentFolder in struct) {
+                            print(currentFolder.title);
+                            var servers = currentFolder.servers;
+                            servers.removeWhere((element) => element.id == server.id);
+                            currentFolder.servers = servers;
+                          }
+                          ServerFolder.save(struct);
                           _fetchData();
                         },
                         child: Text('remove')),
