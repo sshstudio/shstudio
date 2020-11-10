@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ssh_plugin/ssh_plugin.dart';
 import 'package:sshstudio/models/server.dart';
+import 'package:sshstudio/utils/constants.dart';
 import 'package:xterm/frontend/terminal_view.dart';
 import 'package:xterm/xterm.dart';
 
@@ -19,6 +20,8 @@ class _SshTerminalState extends State<SshTerminal> {
   Terminal terminal;
   SSHClient client;
   final Server  server;
+  
+  final _terminalTheme = defaultTheme;
 
 
   _SshTerminalState(this.server);
@@ -26,7 +29,7 @@ class _SshTerminalState extends State<SshTerminal> {
   @override
   void initState() {
     super.initState();
-    terminal = Terminal(onInput: onInput);
+    terminal = Terminal(onInput: onInput, theme: _terminalTheme);
     connect();
   }
 
@@ -45,7 +48,7 @@ class _SshTerminalState extends State<SshTerminal> {
       if (result == "session_connected") {
         server.connection = client;
         result = await client.startShell(
-            ptyType: "vt100",
+            ptyType: "vt102", // vanilla, vt100, vt102, vt220, ansi, xterm "vt100",
             callback: (dynamic res) {
               terminal.write(res);
             });
@@ -64,12 +67,15 @@ class _SshTerminalState extends State<SshTerminal> {
     return Scaffold(
       body: SafeArea(
         child:
-
-        TerminalView(
-          terminal: terminal,
-          onResize: (width, height) {
-            // client?.setTerminalWindowSize(width, height);
-          },
+        Container(
+          color: Color(_terminalTheme.background.value),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TerminalView(
+              terminal: terminal,
+              autofocus: true,
+            ),
+          ),
         ),
       ),
     );
