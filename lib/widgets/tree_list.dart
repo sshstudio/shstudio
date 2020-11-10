@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:sshstudio/main.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/models/server_folder.dart';
+import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/widgets/add_folder_window.dart';
 import 'package:sshstudio/widgets/add_server_window.dart';
 import 'package:sshstudio/widgets/tree_view.dart';
@@ -69,7 +70,7 @@ class _TreeListState extends State<TreeList> {
       padding: EdgeInsets.only(left: padding),
       child: Row(
         children: [
-          Icon(Icons.folder, color: Color.fromRGBO(17, 63, 134, 1)),
+          Icon(Icons.folder, color: darkBlue),
           Text(folder.title),
 
           PopupMenuButton(
@@ -129,7 +130,7 @@ class _TreeListState extends State<TreeList> {
         padding: EdgeInsets.only(left: padding),
         child: Row(
           children: [
-            Icon(Icons.computer, color: Color.fromRGBO(35, 147, 239, 1)),
+            Icon(Icons.computer, color: lightBlue),
             GestureDetector(
               onTap: () {
                 connectionsPool.openConnection(server);

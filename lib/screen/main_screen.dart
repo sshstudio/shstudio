@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:split_view/split_view.dart';
+import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/widgets/tabbed_area.dart';
 import 'package:sshstudio/widgets/tree_list.dart';
 
@@ -6,32 +10,31 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
-        child: Row(
-          children: [
-            Container(
-              width: 400,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.blueAccent)
-            ),
-              child:  Column(
-                  children:[
-                    SingleChildScrollView(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height - 2, // 200,
-                        // width: 400,
-                        child: TreeList(),
-                        ),
+        child:
+        SplitView(
+          initialWeight:  1.3 / log(MediaQuery.of(context).size.width),// 0.178,
+          viewMode: SplitViewMode.Horizontal,
+          gripColor: lightBlue,
+          gripSize: 3,
+          view1: Container(
+            child:
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      // width: 400,
+                      child: TreeList(),
                     ),
-                  ]
-              ),
-            ),
-            Expanded(
-              child:TabbedArea(),
-            )
-          ],
-        ),
+                  ),
+          ),
+          view2:  Container(
+            child:TabbedArea(),
+          ),
+        )
       ),
     );
   }

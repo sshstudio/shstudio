@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/connections.dart';
 import 'package:sshstudio/models/server.dart';
+import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/widgets/ssh_terminal.dart';
 
 import '../main.dart';
@@ -25,13 +26,13 @@ class _TabbedAreaState extends State<TabbedArea> with SingleTickerProviderStateM
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
               Container(
                 child: TabBar(
-                  labelColor: Colors.green,
+                  labelColor: darkBlue,
                   unselectedLabelColor: Colors.black,
                   tabs: _tabs(snapshot.data),
                 ),
               ),
               Container(
-                  height: 400, //height of TabBarView
+                  height: MediaQuery.of(context).size.height - 48, //height of TabBarView
                   decoration: BoxDecoration(
                       border: Border(top: BorderSide(color: Colors.grey, width: 0.5))
                   ),
