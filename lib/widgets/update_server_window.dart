@@ -2,7 +2,6 @@
 import 'package:file_chooser/file_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server.dart';
-import 'package:uuid/uuid.dart';
 
 class _FormData {
   String id;
@@ -14,18 +13,22 @@ class _FormData {
   String key;
 }
 
-class AddServerWindow extends StatelessWidget {
+class UpdateServerWindow extends StatelessWidget {
   final String folderId;
 
   final onSuccess;
 
-  AddServerWindow(this.folderId, this.onSuccess);
+  final Server server;
+
+  UpdateServerWindow(this.server, this.folderId, this.onSuccess);
 
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
 
     var data = _FormData();
+
+    data.key = server.key;
 
     return AlertDialog(
       content: Stack(
@@ -38,6 +41,7 @@ class AddServerWindow extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: server.title,
                     decoration: InputDecoration(
                       hintText: 'New server name',
                       filled: true,
@@ -54,6 +58,7 @@ class AddServerWindow extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: server.url,
                     decoration: InputDecoration(
                       hintText: 'New server url',
                       filled: true,
@@ -70,7 +75,7 @@ class AddServerWindow extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
-                    initialValue: '22',
+                    initialValue: server.port.toString(),
                     decoration: InputDecoration(
                       hintText: 'New server port',
                       filled: true,
@@ -87,6 +92,7 @@ class AddServerWindow extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: server.login,
                     decoration: InputDecoration(
                       hintText: 'New server login',
                       filled: true,
@@ -103,6 +109,7 @@ class AddServerWindow extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: server.password,
                     decoration: InputDecoration(
                       hintText: 'New server password',
                       filled: true,
@@ -122,8 +129,8 @@ class AddServerWindow extends StatelessWidget {
                     showOpenPanel(
                         canSelectDirectories: false,
                         allowsMultipleSelection: false)
-                        .then((FileChooserResult value) =>
-                    data.key = value.paths[0])
+                        .then((FileChooserResult value)
+                    { print(value.paths[0]);  data.key = value.paths[0];})
                   },
                   child: Text("Open file picker"),
                 ),
@@ -132,11 +139,11 @@ class AddServerWindow extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: RaisedButton(
-                        child: Text("Add"),
+                        child: Text("Save"),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             Server(
-                                (new Uuid()).v4(),
+                                server.id,
                                 data.title,
                                 data.url,
                                 data.login,

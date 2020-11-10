@@ -15,6 +15,7 @@ class Storage {
       File fd = File(file);
       return fd.exists().then((exist) async {
         String content = await fd.readAsString();
+        print(content);
         return ServerFolder.fromJson(jsonDecode(content));
       });
     });

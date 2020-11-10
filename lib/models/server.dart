@@ -46,6 +46,7 @@ class Server {
   void saveToFolder(String folderId) {
     for (final folder in ServerFolder.structure) {
       if(folder.id == folderId) {
+        folder.servers.removeWhere((element) => element.id == this.id);
         folder.servers.add(this);
         ServerFolder.save(ServerFolder.structure);
         break;

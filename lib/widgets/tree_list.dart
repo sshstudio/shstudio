@@ -7,6 +7,7 @@ import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/widgets/add_folder_window.dart';
 import 'package:sshstudio/widgets/add_server_window.dart';
 import 'package:sshstudio/widgets/tree_view.dart';
+import 'package:sshstudio/widgets/update_server_window.dart';
 
 class TreeList extends StatefulWidget {
   @override
@@ -49,7 +50,7 @@ class _TreeListState extends State<TreeList> {
       return folders.map((ServerFolder folder) {
         List<Widget> servers = [];
         for (Server server in folder.servers) {
-          servers.add(_server(server, 25));
+          servers.add(_server(server, 25, folder.id));
         }
 
         return Parent(
@@ -87,7 +88,12 @@ class _TreeListState extends State<TreeList> {
 
                         _fetchData();
                       },
-                      child: Text('remove')),
+                      child: Row(
+                        children: [
+                          Icon(Icons.restore_from_trash),
+                          Text('remove'),
+                        ],
+                      )),
                 ),
                 isRoot ? PopupMenuItem<String>(
                   value: 'add folder to ' + folder.title,
@@ -100,7 +106,12 @@ class _TreeListState extends State<TreeList> {
                             });
 
                       },
-                      child: Text('add folder')),
+                      child: Row(
+                        children: [
+                          Icon(Icons.add),
+                          Text('add folder'),
+                        ],
+                      )),
                 ) : null,
                 isRoot ? null : PopupMenuItem<String>(
                   value: 'add server to ' + folder.title,
@@ -113,7 +124,12 @@ class _TreeListState extends State<TreeList> {
                               return AddServerWindow(folder.id, _fetchData);
                             });
                       },
-                      child: Text('add server')),
+                      child: Row(
+                        children: [
+                          Icon(Icons.add),
+                          Text('add server'),
+                        ],
+                      )),
                 ),
               ];
             },
@@ -123,7 +139,7 @@ class _TreeListState extends State<TreeList> {
     );
   }
 
-  Widget _server(Server server, double padding) {
+  Widget _server(Server server, double padding, String folderId) {
     return MouseRegion(
       cursor: SystemMouseCursors.contextMenu,
       child: Padding(
@@ -154,7 +170,30 @@ class _TreeListState extends State<TreeList> {
                           ServerFolder.save(struct);
                           _fetchData();
                         },
-                        child: Text('remove')),
+                        child: Row(
+                          children: [
+                            Icon(Icons.restore_from_trash),
+                            Text('remove'),
+                          ],
+                        )),
+                  ),
+                  PopupMenuItem(
+                    value: 'edit ' + server.title,
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return UpdateServerWindow(server, folderId, _fetchData);
+                            });
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.edit),
+                          Text('Edit'),
+                        ],
+                      ),
+                    ),
                   )
                 ];
               },
