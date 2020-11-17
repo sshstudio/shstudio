@@ -1,7 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:sshstudio/main.dart';
 import 'package:sshstudio/models/server.dart';
-import 'package:uuid/uuid.dart';
 
 class ConnectionsListener {
   BehaviorSubject<Connections> onChange;
@@ -12,16 +11,18 @@ class ConnectionsListener {
 
 class Connections {
 
-  var uuid = Uuid();
-
   Map<String, Server> connections = {};
 
-  Future openConnection(Server server) {
-    connections[uuid.v4()] = server;
-    connectionsListener.onChange.value = this;
+  bool openConnection(Server server) {
+    if (false == connections.containsKey(server.id)) {
+      connections[server.id] = server;
+      connectionsListener.onChange.value = this;
+      return true;
+    }
+    return false;
   }
 
-  Future closeConnection(String id) {
+  void closeConnection(String id) {
     if (connections[id].connection != null) {
       connections[id].connection.closeShell();
     }

@@ -149,7 +149,13 @@ class _TreeListState extends State<TreeList> {
             Icon(Icons.computer, color: lightBlue),
             GestureDetector(
               onTap: () {
-                connectionsPool.openConnection(server);
+                if (false == connectionsPool.openConnection(server)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Соединение для сервера '+ server.title + 'уже открыто'),
+                    ),
+                  );
+                }
               },
               child: Text(server.title),
             ),
