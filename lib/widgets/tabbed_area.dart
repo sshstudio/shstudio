@@ -15,6 +15,9 @@ class _TabbedAreaState extends State<TabbedArea> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+
+    super.build(context);
+
     return StreamBuilder(
       stream: connectionsListener.onChange,
       builder: (context, snapshot) {

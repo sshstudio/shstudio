@@ -10,7 +10,7 @@ class SshTerminal extends StatefulWidget {
   final String terminalId;
   final Server server;
 
-  SshTerminal(this.server, this.terminalId){}
+  SshTerminal(this.server, this.terminalId);
 
   @override
   _SshTerminalState createState() => _SshTerminalState(this.server);
