@@ -127,7 +127,7 @@ class _TreeListState extends State<TreeList> {
 
   Widget _server(Server server, double padding, String folderId) {
     return MouseRegion(
-      cursor: SystemMouseCursors.contextMenu,
+      cursor: SystemMouseCursors.click,
       child: Padding(
         padding: EdgeInsets.only(left: padding),
         child: Row(
