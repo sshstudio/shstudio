@@ -6,7 +6,6 @@ import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/widgets/add_folder_window.dart';
 import 'package:sshstudio/widgets/add_server_window.dart';
-import 'package:sshstudio/widgets/tree_view.dart';
 import 'package:sshstudio/widgets/update_server_window.dart';
 
 class TreeList extends StatefulWidget {
@@ -17,7 +16,7 @@ class TreeList extends StatefulWidget {
 }
 
 class _TreeListState extends State<TreeList> {
-  List<Widget> structure;
+  List<Widget> structure = List<Widget>();
 
   _TreeListState() {
     _fetchData();
@@ -31,38 +30,24 @@ class _TreeListState extends State<TreeList> {
 
   @override
   Widget build(BuildContext context) {
-    return TreeView(
-      hasScrollBar: true,
-      parentList: [
-        Parent(
-          parent: _folder(ServerFolder.root(), 5, isRoot: true),
-          childList: ChildList(
-            children: structure,
-          ),
-        ),
-      ],
+    return Column(
+      children: structure,
     );
   }
 
   Future<List<Widget>> _structure() async {
     return ServerFolder.getList().then((List<ServerFolder> folders) {
 
-      return folders.map((ServerFolder folder) {
-        List<Widget> servers = [];
+      var foldersList =  List<Widget>();
+      foldersList.add(_folder(ServerFolder.root(), 5, isRoot: true));
+      for(ServerFolder folder in folders) {
+        foldersList.add(_folder(folder, 15));
         for (Server server in folder.servers) {
-          servers.add(_server(server, 25, folder.id));
+          foldersList.add(_server(server, 30, folder.id));
         }
+      }
 
-        return Parent(
-          callback: (isSelected) {
-            print('tap ' + folder.title);
-          },
-          parent: _folder(folder, 15.0),
-          childList: ChildList(
-            children: servers,
-          ),
-        );
-      }).toList();
+      return foldersList;
     });
   }
 
