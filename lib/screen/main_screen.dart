@@ -13,7 +13,7 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
           child: SplitView(
-        initialWeight: 1.3 / log(MediaQuery.of(context).size.width),
+        initialWeight: 1.4 / log(MediaQuery.of(context).size.width),
         // 0.178,
         viewMode: SplitViewMode.Horizontal,
         gripColor: lightBlue,
@@ -23,11 +23,9 @@ class MainScreen extends StatelessWidget {
             scrollbarColor: Theme.of(context).accentColor.withOpacity(0.75),
             scrollbarThickness: 8.0,
             scrollDirection: Axis.horizontal,
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              // width: 400,
-              child: TreeList(),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [TreeList()],
             ),
           ),
         ),

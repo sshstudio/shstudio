@@ -31,6 +31,7 @@ class _TreeListState extends State<TreeList> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: structure,
     );
   }
