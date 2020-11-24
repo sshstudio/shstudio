@@ -9,16 +9,16 @@ jobs:
   build:
     name: Build Apps
 
-    runs-on: ${{ matrix.os }}
     strategy:
-    matrix:
-      os: [macos-latest, ubuntu-latest]
-      include:
-        - os: macos-latest
-          TARGET: ['macos']
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        include:
+          - os: macos-latest
+            TARGET: 'macos'
 
-        - os: ubuntu-latest
-          TARGET: ['linux', 'apk']
+          - os: ubuntu-latest
+            TARGET: 'linux apk'
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Export Release Timestamp
@@ -42,7 +42,8 @@ jobs:
 
       - name: build
         run: |
-          for t in ${{matrix.TARGET}} do
+          TARGETS = ' ' read -r -a array <<< matrix.TARGET
+          for t in ${{TARGETS}} do
           flutter build ${{t}};
           done
 
