@@ -1,13 +1,29 @@
+name: Build and Release Apps
+
 on:
   push:
     branches:
       - master
 
-name: Build and Release Apps
 jobs:
   build:
     name: Build Apps
-    runs-on: macos-latest
+
+
+    runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          include:
+            os: macos-latest
+              env:
+                - TARGET: ['macos', 'apk']
+
+            os: ubuntu-latest
+              env:
+                - TARGET: ['linux']
+
+
+
     steps:
       - name: Export Release Timestamp
         run: echo "::set-env name=APP_VERSION::release_$(date +'%Y-%m-%d_%H-%m-%S')"
@@ -27,17 +43,13 @@ jobs:
         run: flutter test
       - name: Build Android App
         run: flutter build apk --split-per-abi
-      - name: Build iOS App
+
+      - name: build
         run: |
-          flutter build ios --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
-      - name: Build MacOS app
-        run: flutter build macos
+          for t in ${{matrix.TARGET}} do
+          flutter build ${{t}};
+          done
+
       - name: Release Apps
         uses: ncipollo/release-action@v1
         with:
