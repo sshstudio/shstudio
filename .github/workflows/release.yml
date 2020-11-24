@@ -11,16 +11,17 @@ jobs:
 
 
     runs-on: ${{ matrix.os }}
-      strategy:
-        matrix:
-          include:
-            os: macos-latest
-              env:
-                - TARGET: ['macos', 'apk']
+    strategy:
+    matrix:
+      os: [macos-latest, ubuntu-latest]
+      include:
+        - os: macos-latest
+            env:
+                - TARGET: ['macos']
 
-            os: ubuntu-latest
-              env:
-                - TARGET: ['linux']
+        - os: ubuntu-latest
+            env:
+                - TARGET: ['linux', 'apk']
 
 
 
