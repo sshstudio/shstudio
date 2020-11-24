@@ -17,7 +17,7 @@ jobs:
             TARGET: 'macos'
 
           - os: ubuntu-latest
-            TARGET: 'linux apk'
+            TARGET: 'linux, apk'
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -42,9 +42,9 @@ jobs:
 
       - name: build
         run: |
-          TARGETS = ' ' read -r -a array <<< matrix.TARGET
-          for t in ${{TARGETS}} do
-          flutter build ${{t}};
+          IFS = ' ' read -r -a array <<< matrix.TARGET
+          for t in ${{array[@]}} do
+          flutter build ${{$element}};
           done
 
       - name: Release Apps
