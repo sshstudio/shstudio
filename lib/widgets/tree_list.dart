@@ -125,6 +125,16 @@ class _TreeListState extends State<TreeList> {
     );
   }
 
+  void _onServerTap(Server server) {
+    if (false == connectionsPool.openConnection(server)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Соединение для сервера '+ server.title + 'уже открыто'),
+        ),
+      );
+    }
+  }
+
   Widget _server(Server server, double padding, String folderId) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -135,19 +145,45 @@ class _TreeListState extends State<TreeList> {
             Icon(Icons.computer, color: lightBlue),
             GestureDetector(
               onTap: () {
-                if (false == connectionsPool.openConnection(server)) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Соединение для сервера '+ server.title + 'уже открыто'),
-                    ),
-                  );
-                }
+               _onServerTap(server);
               },
               child: Text(server.title),
             ),
             PopupMenuButton(
               itemBuilder: (BuildContext context) {
                 return [
+                  PopupMenuItem(
+                    value: 'edit ' + server.title,
+                    child: GestureDetector(
+                      onTap: () {
+                        _onServerTap(server);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.cast_connected),
+                          Text('Connect'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'edit ' + server.title,
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return UpdateServerWindow(server, folderId, _fetchData);
+                            });
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.edit),
+                          Text('Edit'),
+                        ],
+                      ),
+                    ),
+                  ),
                   PopupMenuItem<String>(
                     value: 'remove ' + server.title,
                     child: GestureDetector(
@@ -169,24 +205,6 @@ class _TreeListState extends State<TreeList> {
                           ],
                         )),
                   ),
-                  PopupMenuItem(
-                    value: 'edit ' + server.title,
-                    child: GestureDetector(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return UpdateServerWindow(server, folderId, _fetchData);
-                            });
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.edit),
-                          Text('Edit'),
-                        ],
-                      ),
-                    ),
-                  )
                 ];
               },
             )
