@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ssh_plugin/ssh_plugin.dart';
+import 'package:sshstudio/main.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/utils/constants.dart';
 import 'package:xterm/frontend/terminal_view.dart';
@@ -42,7 +43,6 @@ class _SshTerminalState extends State<SshTerminal> {
         "privateKey": server.getKeyOrPassword(),
       },
     );
-
     try {
       String result = await client.connect();
       if (result == "session_connected") {
@@ -54,6 +54,12 @@ class _SshTerminalState extends State<SshTerminal> {
             });
       }
     } on PlatformException catch (e) {
+      connectionsPool.closeConnection(server.id);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Соединение для сервера '+ server.title + ' не удалось ${e.message}'),
+        ),
+      );
       print('Error: ${e.code}\nError Message: ${e.message}');
     }
   }
