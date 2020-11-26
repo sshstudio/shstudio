@@ -5,7 +5,7 @@ import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/widgets/single_child_scroll_view_with_scrollbar.dart';
 import 'package:sshstudio/widgets/split_view.dart';
 import 'package:sshstudio/widgets/tabbed_area.dart';
-import 'package:sshstudio/widgets/tree_list.dart';
+import 'package:sshstudio/widgets/tree_list/tree_list.dart';
 
 class MainScreen extends StatelessWidget {
   @override
