@@ -15,13 +15,13 @@ class FileSelect extends StatefulWidget {
 }
 
 class _FileSelectState extends State<FileSelect> {
-  var _controller = TextEditingController();
 
   String _errorText = '';
 
   @override
   Widget build(BuildContext context) {
 
+    var _controller = TextEditingController(text: widget.initialValue);
     var decoration =  widget.decoration.copyWith(errorStyle:TextStyle(height: 0),);
 
     return Column(
@@ -40,7 +40,6 @@ class _FileSelectState extends State<FileSelect> {
                   });
                   return result;
                 },
-                initialValue: widget.initialValue,
               ),
             ),
             ButtonTheme(

@@ -125,6 +125,7 @@ class UpdateServerWindow extends StatelessWidget {
                   ),
                 ),
                 FileSelect(
+                  initialValue: data.key,
                   width: 130,
                   button: Text('select key'),
                   validator: (value) {
