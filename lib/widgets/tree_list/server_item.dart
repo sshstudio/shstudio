@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/utils/constants.dart';
-import 'package:sshstudio/widgets/modal/update_server_window.dart';
+import 'package:sshstudio/widgets/modal/server_form_window.dart';
 
 import '../../main.dart';
 
@@ -55,7 +55,7 @@ class ServerItem extends StatelessWidget {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return UpdateServerWindow(server, folderId, onUpdate);
+                              return ServerFormWindow(ServerDto.fromServer(server), folderId, onUpdate);
                             });
                       },
                       child: Row(

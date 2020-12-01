@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/widgets/modal/add_folder_window.dart';
-
-import '../modal/add_server_window.dart';
+import 'package:sshstudio/widgets/modal/server_form_window.dart';
 
 class ServerFolderItem extends StatelessWidget {
 
@@ -12,8 +12,7 @@ class ServerFolderItem extends StatelessWidget {
   final ServerFolder folder;
   final bool isRoot;
   final Function onUpdate;
-
-
+  
   ServerFolderItem({this.padding, this.folder, this.isRoot, this.onUpdate});
 
   @override
@@ -24,7 +23,6 @@ class ServerFolderItem extends StatelessWidget {
         children: [
           Icon(Icons.folder, color: darkBlue),
           Text(folder.title),
-
           PopupMenuButton(
             itemBuilder: (BuildContext context) {
               return [
@@ -68,11 +66,10 @@ class ServerFolderItem extends StatelessWidget {
                   value: 'add server to ' + folder.title,
                   child: GestureDetector(
                       onTap: () {
-
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AddServerWindow(folder.id, onUpdate);
+                              return ServerFormWindow(ServerDto(), folder.id, onUpdate);
                             });
                       },
                       child: Row(

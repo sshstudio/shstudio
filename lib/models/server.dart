@@ -3,6 +3,24 @@ import 'dart:io';
 import 'package:ssh_plugin/ssh_plugin.dart';
 import 'package:sshstudio/models/server_folder.dart';
 
+class ServerDto {
+  String id;
+  String title;
+  String url;
+  String login;
+  String password;
+
+  int port = 22;
+
+  String key;
+
+  ServerDto({this.id, this.title, this.url, this.login, this.password, port = 22, this.key});
+
+  factory ServerDto.fromServer(Server server) {
+    return ServerDto(id: server.id, title: server.title, url: server.url, login: server.login, password: server.password, port: server.port, key: server.key);
+  }
+}
+
 class Server {
   String id;
   String title;
