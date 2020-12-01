@@ -1,7 +1,8 @@
 
-import 'package:file_chooser/file_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server.dart';
+
+import '../file_select.dart';
 
 class _FormData {
   String id;
@@ -123,16 +124,20 @@ class UpdateServerWindow extends StatelessWidget {
                     },
                   ),
                 ),
-                RaisedButton(
-                  onPressed: () =>
-                  {
-                    showOpenPanel(
-                        canSelectDirectories: false,
-                        allowsMultipleSelection: false)
-                        .then((FileChooserResult value)
-                    { print(value.paths[0]);  data.key = value.paths[0];})
+                FileSelect(
+                  width: 130,
+                  button: Text('select key'),
+                  validator: (value) {
+                    if (value.isEmpty || data.password.isEmpty) {
+                      return 'Folder name cant be blank';
+                    }
+                    data.key = value;
+                    return null;
                   },
-                  child: Text("Open file picker"),
+                  decoration: InputDecoration(
+                    hintText: 'New server login',
+                    filled: true,
+                  ),
                 ),
                 Row(
                   children: [
