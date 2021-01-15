@@ -24,15 +24,12 @@ dependencies:
   flutter:
     sdk: flutter
   xterm: ^1.1.1+1
-#  dartssh: ^1.0.3+3
+  dartssh: ^1.0.3+3
   path_provider: ^1.6.22
   sentry: ">=3.0.0 <4.0.0"
   flutter_dotenv: ^2.1.0
   rxdart: ^0.24.1
   uuid: ^2.2.2
-  ssh_plugin:
-    git:
-      url: git://github.com/fgh151/ssh_plugin.git
   file_chooser:
     git:
       url: git://github.com/google/flutter-desktop-embedding.git

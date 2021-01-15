@@ -1,7 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dartssh/client.dart';
+import 'package:dartssh/identity.dart';
+import 'package:dartssh/pem.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:ssh_plugin/ssh_plugin.dart';
-import 'package:sshstudio/main.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/utils/constants.dart';
 import 'package:xterm/frontend/terminal_view.dart';
@@ -20,10 +23,11 @@ class SshTerminal extends StatefulWidget {
 class _SshTerminalState extends State<SshTerminal> {
   Terminal terminal;
   SSHClient client;
-  final Server  server;
-  
+  final Server server;
+
   final _terminalTheme = defaultTheme;
 
+  Identity identity;
 
   _SshTerminalState(this.server);
 
@@ -34,46 +38,43 @@ class _SshTerminalState extends State<SshTerminal> {
     connect();
   }
 
-  Future<void> connect() async {
-    client = new SSHClient(
-      host: server.url,
-      port: server.port,
-      username: server.login,
-      passwordOrKey: server.key == null ? server.password :{
-        "privateKey": server.getKeyOrPassword(),
+  void connect() {
+    terminal.write('connecting ${server.url}...');
+    client = SSHClient(
+      hostport: Uri(host: server.url, port: server.port),
+      login: server.login,
+      print: print,
+      termWidth: 80,
+      termHeight: 25,
+      termvar: 'xterm-256color',
+      getPassword: () => utf8.encode(server.password),
+      response: (transport, data) {
+        terminal.write(data);
+      },
+      success: () {
+        terminal.write('connected.\n');
+      },
+      disconnected: () {
+        terminal.write('disconnected.');
+      },
+      loadIdentity: () {
+        if (identity == null && server.key != null) {
+          identity = parsePem(File(server.key).readAsStringSync());
+        }
+        return identity;
       },
     );
-    try {
-      String result = await client.connect();
-      if (result == "session_connected") {
-        server.connection = client;
-        result = await client.startShell(
-            ptyType: "vt102", // vanilla, vt100, vt102, vt220, ansi, xterm "vt100",
-            callback: (dynamic res) {
-              terminal.write(res);
-            });
-      }
-    } on PlatformException catch (e) {
-      connectionsPool.closeConnection(server.id);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Соединение для сервера '+ server.title + ' не удалось ${e.message}'),
-        ),
-      );
-      print('Error: ${e.code}\nError Message: ${e.message}');
-    }
   }
 
   void onInput(String input) {
-    client.writeToShell(input).then((value) {print('result'); print(value);});
+    client?.sendChannelData(utf8.encode(input));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child:
-        Container(
+        child: Container(
           color: Color(_terminalTheme.background.value),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

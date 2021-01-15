@@ -24,7 +24,7 @@ class Connections {
 
   void closeConnection(String id) {
     if (connections[id].connection != null) {
-      connections[id].connection.closeShell();
+      connections[id].connection.disconnect('user event');
     }
     connections.remove(id);
     connectionsListener.onChange.value = this;

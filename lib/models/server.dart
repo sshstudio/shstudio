@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:ssh_plugin/ssh_plugin.dart';
+import 'package:dartssh/client.dart';
 import 'package:sshstudio/models/server_folder.dart';
 
 class ServerDto {
@@ -14,10 +14,24 @@ class ServerDto {
 
   String key;
 
-  ServerDto({this.id, this.title, this.url, this.login, this.password, port = 22, this.key});
+  ServerDto(
+      {this.id,
+      this.title,
+      this.url,
+      this.login,
+      this.password,
+      port = 22,
+      this.key});
 
   factory ServerDto.fromServer(Server server) {
-    return ServerDto(id: server.id, title: server.title, url: server.url, login: server.login, password: server.password, port: server.port, key: server.key);
+    return ServerDto(
+        id: server.id,
+        title: server.title,
+        url: server.url,
+        login: server.login,
+        password: server.password,
+        port: server.port,
+        key: server.key);
   }
 }
 
@@ -57,13 +71,14 @@ class Server {
       };
 
   factory Server.fromJson(Map<String, dynamic> json) {
-    return Server(json['id'], json['title'], json['url'], json['login'], json['password'], port: json['port'], key: json['key']);
+    return Server(
+        json['id'], json['title'], json['url'], json['login'], json['password'],
+        port: json['port'], key: json['key']);
   }
-
 
   void saveToFolder(String folderId) {
     for (final folder in ServerFolder.structure) {
-      if(folder.id == folderId) {
+      if (folder.id == folderId) {
         folder.servers.removeWhere((element) => element.id == this.id);
         folder.servers.add(this);
         ServerFolder.save(ServerFolder.structure);
