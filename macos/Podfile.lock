@@ -2,24 +2,18 @@ PODS:
   - file_chooser (0.0.2):
     - FlutterMacOS
   - FlutterMacOS (1.22.4)
-  - NMSSH (2.3.1)
   - path_provider (0.0.1)
   - path_provider_macos (0.0.1):
     - FlutterMacOS
-  - ssh_plugin (0.0.2):
-    - FlutterMacOS
-    - NMSSH
 
 DEPENDENCIES:
   - file_chooser (from `Flutter/ephemeral/.symlinks/plugins/file_chooser/macos`)
   - path_provider (from `Flutter/ephemeral/.symlinks/plugins/path_provider/macos`)
   - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
-  - ssh_plugin (from `Flutter/ephemeral/.symlinks/plugins/ssh_plugin/macos`)
 
 SPEC REPOS:
   trunk:
     - FlutterMacOS
-    - NMSSH
 
 EXTERNAL SOURCES:
   file_chooser:
@@ -28,16 +22,12 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider/macos
   path_provider_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos
-  ssh_plugin:
-    :path: Flutter/ephemeral/.symlinks/plugins/ssh_plugin/macos
 
 SPEC CHECKSUMS:
   file_chooser: 24432cf5dc836722b05c11c2a0a30d19c3c9b996
   FlutterMacOS: ac210ef71944b3f04789076d70d4c72c7ec0c619
-  NMSSH: cd689ae535a1581a6dd9fd4600ff71247df510a6
   path_provider: e0848572d1d38b9a7dd099e79cf83f5b7e2cde9f
   path_provider_macos: a0a3fd666cb7cd0448e936fb4abad4052961002b
-  ssh_plugin: 701cd9c84b9be4057a1ee3672e4851181beac5e3
 
 PODFILE CHECKSUM: d8ba9b3e9e93c62c74a660b46c6fcb09f03991a7
 
