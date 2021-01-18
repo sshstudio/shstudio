@@ -20,7 +20,7 @@ class SshTerminal extends StatefulWidget {
   _SshTerminalState createState() => _SshTerminalState(this.server);
 }
 
-class _SshTerminalState extends State<SshTerminal> {
+class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClientMixin<SshTerminal> {
   Terminal terminal;
   SSHClient client;
   final Server server;
@@ -87,4 +87,7 @@ class _SshTerminalState extends State<SshTerminal> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
