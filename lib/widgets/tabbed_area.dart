@@ -53,6 +53,7 @@ class _TabbedAreaState extends State<TabbedArea> with SingleTickerProviderStateM
       child: Row(
         children: [
           Text(entry.value.title + ''),
+          Spacer(),
           IconButton(
             icon: Icon(Icons.close),
             onPressed: (){
