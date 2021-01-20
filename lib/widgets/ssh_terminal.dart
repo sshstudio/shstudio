@@ -39,6 +39,11 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
   }
 
   void connect() {
+
+    print(server.key);
+
+    var key = server.getKey();
+
     terminal.write('connecting ${server.url}...');
     client = SSHClient(
       hostport: Uri(host: server.url, port: server.port),
@@ -57,7 +62,7 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
       disconnected: () {
         terminal.write('disconnected.');
       },
-      loadIdentity: () {
+      loadIdentity: key == null ? null: () {
         if (identity == null && server.key != null) {
           identity = parsePem(File(server.key).readAsStringSync());
         }

@@ -55,6 +55,13 @@ class Server {
     return password;
   }
 
+  String getKey() {
+    if (key == null || key.isEmpty || key == '') {
+      return null;
+    }
+    return key;
+  }
+
   SSHClient connection;
 
   Server(this.id, this.title, this.url, this.login, this.password,
