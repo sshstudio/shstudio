@@ -119,7 +119,7 @@ class ServerFormWindow extends StatelessWidget {
                   width: 130,
                   button: Text('select key'),
                   validator: (value) {
-                    if (value.isEmpty || data.password.isEmpty) {
+                    if (value.isEmpty && data.password.isEmpty) {
                       return 'Folder name cant be blank';
                     }
                     data.key = value;
@@ -134,7 +134,7 @@ class ServerFormWindow extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         child: Text("Save"),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
@@ -158,7 +158,7 @@ class ServerFormWindow extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         child: Text("Close"),
                         onPressed: () {
 
