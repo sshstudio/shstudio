@@ -12,12 +12,15 @@ class Storage {
   static Future<List<ServerFolder>> getServers() {
     return getApplicationSupportDirectory().then((dirName) {
       var file = dirName.path + Platform.pathSeparator + 'servers.json';
-      File fd = File(file);
-      return fd.exists().then((exist) async {
-        String content = await fd.readAsString();
-        print(content);
-        return ServerFolder.fromJson(jsonDecode(content));
-      });
+      return readFile(file).then((value) => ServerFolder.fromJson(jsonDecode(value)));
+    });
+  }
+
+  static Future<String> readFile(String filename) {
+    File fd = File(filename);
+    return fd.exists().then((exist) async {
+      String content = await fd.readAsString();
+      return content;
     });
   }
 
@@ -29,8 +32,7 @@ class Storage {
     });
   }
 
-  static Future<String> saveToFile(String filename, String content)
-  {
+  static Future<String> saveToFile(String filename, String content) {
     File fd = File(filename);
     return fd.exists().then((exist) async {
       fd.writeAsString(content);
