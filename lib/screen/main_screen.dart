@@ -1,15 +1,34 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:file_chooser/file_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:sshstudio/utils/constants.dart';
+import 'package:sshstudio/utils/storage.dart';
 import 'package:sshstudio/widgets/single_child_scroll_view_with_scrollbar.dart';
 import 'package:sshstudio/widgets/split_view.dart';
 import 'package:sshstudio/widgets/tabbed_area.dart';
 import 'package:sshstudio/widgets/tree_list/tree_list.dart';
 
 class MainScreen extends StatelessWidget {
+  
+  export() {
+    showSavePanel(suggestedFileName: 'servers.json').then((value) {
+      final paths = value.paths;
+      for (int i = 0; i < paths.length; i++) {
+        final path = paths[i];
+        Storage.saveToFile(path, jsonEncode(Storage.getServers()));
+      }
+    });
+  }
+
+  import() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    String filePath;
     return Scaffold(
       body: SafeArea(
           child: SplitView(
@@ -25,7 +44,21 @@ class MainScreen extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              children: [TreeList()],
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_upward),
+                      onPressed: export,
+                    ),
+                    // IconButton(
+                    //   icon: Icon(Icons.arrow_downward),
+                    //   onPressed: import,
+                    // ),
+                  ],
+                ),
+                TreeList(),
+              ],
             ),
           ),
         ),
