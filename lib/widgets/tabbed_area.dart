@@ -17,16 +17,7 @@ class _TabbedAreaState extends State<TabbedArea> with TickerProviderStateMixin, 
   Widget build(BuildContext context) {
 
     super.build(context);
-
     TabController _tabController;
-
-    @override
-    void dispose() {
-      if (_tabController != null) {
-        _tabController.dispose();
-      }
-      super.dispose();
-    }
 
     return StreamBuilder(
       stream: connectionsListener.onChange,
@@ -45,15 +36,12 @@ class _TabbedAreaState extends State<TabbedArea> with TickerProviderStateMixin, 
         list.asMap().forEach((index, element) {
           if (element.id == connections.activeConnection.id) {
             initialIndex = index;
-            print('active index '+index.toString());
             _tabController.animateTo(index);
           }
         });
 
-        print('Index ' + initialIndex.toString());
-
         return DefaultTabController(
-            // initialIndex: initialIndex,
+            initialIndex: initialIndex,
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
               Container(
                 child: TabBar(

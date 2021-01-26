@@ -45,7 +45,7 @@ class _FileSelectState extends State<FileSelect> {
             ButtonTheme(
               height: 55,
               buttonColor: Colors.grey[100],
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () => {
                   showOpenPanel(
                           canSelectDirectories: false, allowsMultipleSelection: false)

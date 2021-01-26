@@ -44,7 +44,7 @@ class AddFolderWindow extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         child: Text("Add"),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {

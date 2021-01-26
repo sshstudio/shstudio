@@ -77,6 +77,7 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: SafeArea(
         child: Container(
