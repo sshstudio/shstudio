@@ -13,7 +13,7 @@ class TreeList extends StatefulWidget {
 }
 
 class _TreeListState extends State<TreeList> {
-  List<Widget> structure = List<Widget>();
+  List<Widget> structure = [];
 
   _TreeListState() {
     _fetchData();
@@ -35,7 +35,7 @@ class _TreeListState extends State<TreeList> {
 
   Future<List<Widget>> _structure() async {
     return ServerFolder.getList().then((List<ServerFolder> folders) {
-      var foldersList =  List<Widget>();
+      List<Widget> foldersList =  [];
       foldersList.add(ServerFolderItem(padding: 5, folder: ServerFolder.root(), isRoot: true, onUpdate: _fetchData));
       for(ServerFolder folder in folders) {
         foldersList.add(ServerFolderItem(padding: 15, folder: folder, isRoot: false, onUpdate: _fetchData));
