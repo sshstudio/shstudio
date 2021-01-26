@@ -11,12 +11,22 @@ class TabbedArea extends StatefulWidget {
   _TabbedAreaState createState() => new _TabbedAreaState();
 }
 
-class _TabbedAreaState extends State<TabbedArea> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin<TabbedArea> {
+class _TabbedAreaState extends State<TabbedArea> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<TabbedArea> {
 
   @override
   Widget build(BuildContext context) {
 
     super.build(context);
+
+    TabController _tabController;
+
+    @override
+    void dispose() {
+      if (_tabController != null) {
+        _tabController.dispose();
+      }
+      super.dispose();
+    }
 
     return StreamBuilder(
       stream: connectionsListener.onChange,
@@ -24,25 +34,49 @@ class _TabbedAreaState extends State<TabbedArea> with SingleTickerProviderStateM
         if (!snapshot.hasData || snapshot.data.connections.length < 1) {
           return Center(child: Text('select server to connect', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),) ;
         }
+
+        Connections connections = snapshot.data;
+
+        var length = connections.connections.length;
+        _tabController = new TabController(vsync: this, length: length);
+
+        List list = connections.toList();
+        var initialIndex = connections.connections.length - 1;
+        list.asMap().forEach((index, element) {
+          if (element.id == connections.activeConnection.id) {
+            initialIndex = index;
+            print('active index '+index.toString());
+            _tabController.animateTo(index);
+          }
+        });
+
+        print('Index ' + initialIndex.toString());
+
         return DefaultTabController(
-            initialIndex: snapshot.data.connections.length - 1,
+            // initialIndex: initialIndex,
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
               Container(
                 child: TabBar(
+                  controller: _tabController,
                   labelColor: darkBlue,
                   unselectedLabelColor: Colors.black,
-                  tabs: _tabs(snapshot.data),
+                  tabs: _tabs(connections),
+                  onTap: (index) {
+                    var els = connections.toList();
+                    connections.setActiveConnection(els[index]);
+                    print(els[index]);
+                  },
                 ),
               ),
               Container(
-                  height: MediaQuery.of(context).size.height - 48, //height of TabBarView
+                  height: MediaQuery.of(context).size.height - 48 - 40, //height of TabBarView && height of top menu
                   decoration: BoxDecoration(
                       border: Border(top: BorderSide(color: Colors.grey, width: 0.5))
                   ),
-                  child: TabBarView(children: _tabsContent(snapshot.data))
+                  child: TabBarView(children: _tabsContent(connections), controller: _tabController,)
               )
             ]),
-            length: snapshot.data == null ? 0 : _tabsContent(snapshot.data).length, // length of tabs
+            length: connections == null ? 0 : length, // length of tabs
         );
       }
     );

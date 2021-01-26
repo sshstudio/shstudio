@@ -11,6 +11,8 @@ import 'package:sshstudio/widgets/split_view.dart';
 import 'package:sshstudio/widgets/tabbed_area.dart';
 import 'package:sshstudio/widgets/tree_list/tree_list.dart';
 
+import '../main.dart';
+
 class MainScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -20,6 +22,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   var _upd = false;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   export() {
     showSavePanel(suggestedFileName: 'servers.json').then((value) {
@@ -51,6 +55,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      // endDrawer: SnippetsDrawer(),
       body: SafeArea(
           child: SplitView(
         initialWeight: 1.4 / log(MediaQuery.of(context).size.width),
@@ -84,9 +90,30 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
         view2: Container(
-          child: TabbedArea(),
+          child: Column(
+            children: [
+              StreamBuilder(
+                stream: connectionsListener.onChange,
+                builder: (context, snapshot) {
+                  return snapshot.data == null? Container() : snapshot.data.activeConnection.id != '' ?
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.add_chart),
+                        onPressed: (){
+                          _scaffoldKey.currentState.openEndDrawer();
+                        },
+                      )
+                    ],
+                  ) : Container();
+                }
+              ),
+              Expanded(child: TabbedArea()),
+            ],
+          ),
         ),
       )),
     );
   }
 }
+

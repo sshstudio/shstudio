@@ -11,6 +11,8 @@ class ConnectionsListener {
 
 class Connections {
 
+  Server activeConnection = Server('', '', '', '','');
+
   Map<String, Server> connections = {};
 
   bool openConnection(Server server) {
@@ -28,5 +30,16 @@ class Connections {
     }
     connections.remove(id);
     connectionsListener.onChange.value = this;
+  }
+
+  void setActiveConnection(Server server) {
+    activeConnection = server;
+    connectionsListener.onChange.value = this;
+  }
+
+  List toList() {
+    var list = [];
+    connections.forEach((key, value) => list.add(value));
+    return list;
   }
 }
