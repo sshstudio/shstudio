@@ -108,4 +108,15 @@ class Server {
       }
     }
   }
+
+  Future<List<ServerFolder>> delete() {
+    var struct = ServerFolder.structure;
+    for (ServerFolder currentFolder in struct) {
+      var servers = currentFolder.servers;
+      servers.removeWhere(
+              (element) => element.id == this.id);
+      currentFolder.servers = servers;
+    }
+    return ServerFolder.save(struct);
+  }
 }

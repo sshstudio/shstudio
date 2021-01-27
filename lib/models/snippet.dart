@@ -35,4 +35,17 @@ class Snippet {
       }
     }
   }
+
+  Future<List<ServerFolder>> delete() {
+    for (final folder in ServerFolder.structure) {
+      for (final server in folder.servers) {
+        if (server.id == serverId) {
+          if (server.snippets is List) {
+            server.snippets.removeWhere((element) => element.id == this.id);
+          }
+        }
+      }
+    }
+    return ServerFolder.save(ServerFolder.structure);
+  }
 }

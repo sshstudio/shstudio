@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sshstudio/models/server.dart';
-import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/widgets/modal/server_form_window.dart';
 
@@ -87,14 +86,7 @@ class ServerItem extends StatelessWidget {
                           value: 'remove ' + server.title,
                           child: GestureDetector(
                               onTap: () {
-                                var struct = ServerFolder.structure;
-                                for (ServerFolder currentFolder in struct) {
-                                  var servers = currentFolder.servers;
-                                  servers.removeWhere(
-                                      (element) => element.id == server.id);
-                                  currentFolder.servers = servers;
-                                }
-                                ServerFolder.save(struct);
+                                server.delete();
                                 onUpdate();
                               },
                               child: Row(

@@ -19,6 +19,8 @@ class SnippetFormWindow extends StatelessWidget {
     var data = snippet == null ? Snippet((new Uuid()).v4().toString(), null, null) : snippet;
     data.serverId = serverId;
 
+    print(data.title);
+
     return AlertDialog(
       content: Stack(
         children: <Widget>[
@@ -30,6 +32,7 @@ class SnippetFormWindow extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: data.title,
                     decoration: InputDecoration(
                       hintText: 'Snippet name',
                       filled: true,
@@ -46,6 +49,7 @@ class SnippetFormWindow extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: data.command,
                     decoration: InputDecoration(
                       hintText: 'Snippet command',
                       filled: true,

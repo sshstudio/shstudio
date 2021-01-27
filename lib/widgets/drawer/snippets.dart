@@ -12,6 +12,10 @@ class SnippetsDrawer extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
+  void onUpdate() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -41,11 +45,10 @@ class SnippetsDrawer extends StatelessWidget {
            IconButton(
              icon: Icon(Icons.add),
              onPressed: () {
-               print('add sn');
                showDialog(
                    context: context,
                    builder: (BuildContext context) {
-                     return SnippetFormWindow(server.id, (){});
+                     return SnippetFormWindow(server.id, onUpdate);
                    });
              },
            )
@@ -55,13 +58,13 @@ class SnippetsDrawer extends StatelessWidget {
 
     if (connection.snippets is List) {
       connection.snippets.forEach((element) {
-        list.add(_snippetItem(element));
+        list.add(_snippetItem(element, server));
       });
     }
     return list;
   }
 
-  Widget _snippetItem(Snippet snippet) {
+  Widget _snippetItem(Snippet snippet, Server server) {
     return ListTile(
       title: MouseRegion(
         cursor: SystemMouseCursors.click,
@@ -80,7 +83,11 @@ class SnippetsDrawer extends StatelessWidget {
                       value: 'edit ' + snippet.title,
                       child: GestureDetector(
                         onTap: () {
-                          print('edit ' + snippet.title);
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SnippetFormWindow(server.id, onUpdate, snippet: snippet);
+                              });
                         },
                         child: Row(
                           children: [
@@ -95,13 +102,15 @@ class SnippetsDrawer extends StatelessWidget {
                       child: GestureDetector(
                           onTap: () {
                             print('remove ' + snippet.title);
+                            snippet.delete();
                           },
                           child: Row(
                             children: [
                               Icon(Icons.restore_from_trash),
                               Text('remove'),
                             ],
-                          )),
+                          )
+                      ),
                     ),
                   ];
                 },
