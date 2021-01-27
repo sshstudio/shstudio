@@ -11,6 +11,7 @@ class Storage {
 
   static Future<List<ServerFolder>> getServers() {
     return getApplicationSupportDirectory().then((dirName) {
+      print(dirName);
       var file = dirName.path + Platform.pathSeparator + 'servers.json';
       return readFile(file).then((value) => ServerFolder.fromJson(jsonDecode(value)));
     });

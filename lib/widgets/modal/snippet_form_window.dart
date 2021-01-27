@@ -1,20 +1,23 @@
 
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/snippet.dart';
+import 'package:uuid/uuid.dart';
 
 class SnippetFormWindow extends StatelessWidget {
   final String serverId;
 
   final onSuccess;
 
-  SnippetFormWindow(this.serverId, this.onSuccess);
+  Snippet snippet;
+
+  SnippetFormWindow(this.serverId, this.onSuccess, {this.snippet});
 
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
 
-    var data = Snippet(null, null);
-
+    var data = snippet == null ? Snippet((new Uuid()).v4().toString(), null, null) : snippet;
+    data.serverId = serverId;
 
     return AlertDialog(
       content: Stack(
@@ -67,6 +70,9 @@ class SnippetFormWindow extends StatelessWidget {
                         child: Text("Save"),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
+
+                            data.save();
+
                             // Server(
                             //     server.id,
                             //     data.title,

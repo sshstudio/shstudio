@@ -24,14 +24,14 @@ class SnippetsDrawer extends StatelessWidget {
                       child: ListView(
                         // Important: Remove any padding from the ListView.
                         padding: EdgeInsets.zero,
-                        children: _drawerContent(context),
+                        children: _drawerContent(context, snapshot.data.activeConnection),
                       ),
                     )
                   : Container();
         });
   }
 
-  List<Widget> _drawerContent(context) {
+  List<Widget> _drawerContent(context, Server server) {
     Server connection = connectionsPool.activeConnection;
     List<Widget> list = [
 
@@ -42,14 +42,11 @@ class SnippetsDrawer extends StatelessWidget {
              icon: Icon(Icons.add),
              onPressed: () {
                print('add sn');
-
                showDialog(
                    context: context,
                    builder: (BuildContext context) {
-                     return SnippetFormWindow('serverId', (){});
+                     return SnippetFormWindow(server.id, (){});
                    });
-
-
              },
            )
          ],

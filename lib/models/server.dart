@@ -78,13 +78,24 @@ class Server {
         'password': password,
         'port': port,
         'key': key,
-        'snippets' : snippets
+        'snippets': snippets
       };
 
   factory Server.fromJson(Map<String, dynamic> json) {
-    return Server(
+    var server = Server(
         json['id'], json['title'], json['url'], json['login'], json['password'],
-        port: json['port'], key: json['key'], snippets: json['snippets']);
+        port: json['port'], key: json['key']);
+
+    if (json['snippets'] != null) {
+      List l = json['snippets'];
+      List<Snippet> snippets = l.map((snippet) {
+        var s = Snippet.fromJson(snippet);
+        return s;
+      }).toList();
+      server.snippets = snippets;
+    }
+
+    return server;
   }
 
   void saveToFolder(String folderId) {
