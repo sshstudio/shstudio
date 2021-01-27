@@ -52,7 +52,6 @@ class _TabbedAreaState extends State<TabbedArea> with TickerProviderStateMixin, 
                   onTap: (index) {
                     var els = connections.toList();
                     connections.setActiveConnection(els[index]);
-                    print(els[index]);
                   },
                 ),
               ),

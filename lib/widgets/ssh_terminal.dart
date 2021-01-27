@@ -40,8 +40,6 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
 
   void connect() {
 
-    print(server.key);
-
     var key = server.getKey();
 
     terminal.write('connecting ${server.url}...');

@@ -11,7 +11,7 @@ class ConnectionsListener {
 
 class Connections {
 
-  Server activeConnection = Server('', '', '', '','');
+  Server activeConnection = Server('', '', '', '','', snippets: []);
 
   Map<String, Server> connections = {};
 

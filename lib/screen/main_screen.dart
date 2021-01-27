@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/utils/storage.dart';
+import 'package:sshstudio/widgets/drawer/snippets.dart';
 import 'package:sshstudio/widgets/single_child_scroll_view_with_scrollbar.dart';
 import 'package:sshstudio/widgets/split_view.dart';
 import 'package:sshstudio/widgets/tabbed_area.dart';
@@ -56,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      // endDrawer: SnippetsDrawer(),
+      endDrawer: SnippetsDrawer(),
       body: SafeArea(
           child: SplitView(
         initialWeight: 1.4 / log(MediaQuery.of(context).size.width),

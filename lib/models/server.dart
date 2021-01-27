@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dartssh/client.dart';
 import 'package:sshstudio/models/server_folder.dart';
+import 'package:sshstudio/models/snippet.dart';
 
 class ServerDto {
   String id;
@@ -46,6 +47,8 @@ class Server {
 
   String key;
 
+  List<Snippet> snippets = [];
+
   String getKeyOrPassword() {
     if (key != null) {
       File file = File(key);
@@ -65,7 +68,7 @@ class Server {
   SSHClient connection;
 
   Server(this.id, this.title, this.url, this.login, this.password,
-      {this.port = 22, this.key});
+      {this.port = 22, this.key, this.snippets});
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -75,12 +78,13 @@ class Server {
         'password': password,
         'port': port,
         'key': key,
+        'snippets' : snippets
       };
 
   factory Server.fromJson(Map<String, dynamic> json) {
     return Server(
         json['id'], json['title'], json['url'], json['login'], json['password'],
-        port: json['port'], key: json['key']);
+        port: json['port'], key: json['key'], snippets: json['snippets']);
   }
 
   void saveToFolder(String folderId) {

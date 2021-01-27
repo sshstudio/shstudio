@@ -89,7 +89,6 @@ class ServerItem extends StatelessWidget {
                               onTap: () {
                                 var struct = ServerFolder.structure;
                                 for (ServerFolder currentFolder in struct) {
-                                  print(currentFolder.title);
                                   var servers = currentFolder.servers;
                                   servers.removeWhere(
                                       (element) => element.id == server.id);
@@ -116,7 +115,7 @@ class ServerItem extends StatelessWidget {
   }
 
   void _onServerTap(Server server, BuildContext context) {
-    // connectionsPool.setActiveConnection(server);
+    connectionsPool.setActiveConnection(server);
     if (false == connectionsPool.openConnection(server)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

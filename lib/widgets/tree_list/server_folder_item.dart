@@ -30,7 +30,6 @@ class ServerFolderItem extends StatelessWidget {
                   value: 'remove ' + folder.title,
                   child: GestureDetector(
                       onTap: () {
-                        print('remove ' + folder.title);
 
                         ServerFolder.structure.removeWhere((element) => element.id == folder.id);
                         ServerFolder.save(ServerFolder.structure);
