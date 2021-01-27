@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sentry/sentry.dart';
 import 'package:sshstudio/models/connections.dart';
+import 'package:sshstudio/models/snippet.dart';
 import 'package:sshstudio/screen/main_screen.dart';
 
 Connections connectionsPool = Connections();
 final ConnectionsListener connectionsListener  = ConnectionsListener(connectionsPool);
+
+SnippetsList snippetsList = SnippetsList();
+final SnippetsListener snippetsListener = SnippetsListener(snippetsList);
 
 Future<void> main() async {
 

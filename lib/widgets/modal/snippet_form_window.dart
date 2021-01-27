@@ -49,6 +49,7 @@ class SnippetFormWindow extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    maxLines: 10,
                     initialValue: data.command,
                     decoration: InputDecoration(
                       hintText: 'Snippet command',

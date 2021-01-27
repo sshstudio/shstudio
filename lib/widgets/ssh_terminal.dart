@@ -11,10 +11,9 @@ import 'package:xterm/frontend/terminal_view.dart';
 import 'package:xterm/xterm.dart';
 
 class SshTerminal extends StatefulWidget {
-  final String terminalId;
   final Server server;
 
-  SshTerminal(this.server, this.terminalId);
+  SshTerminal(this.server);
 
   @override
   _SshTerminalState createState() => _SshTerminalState(this.server);
@@ -42,7 +41,7 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
 
     var key = server.getKey();
 
-    terminal.write('connecting ${server.url}...');
+    terminal.write('connecting ${server.url}...\n');
     client = SSHClient(
       hostport: Uri(host: server.url, port: server.port),
       login: server.login,
@@ -55,10 +54,10 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
         terminal.write(data);
       },
       success: () {
-        terminal.write('connected.\n');
+        terminal.write('connected.\n\n');
       },
       disconnected: () {
-        terminal.write('disconnected.');
+        terminal.write('\ndisconnected.');
       },
       loadIdentity: key == null ? null: () {
         if (identity == null && server.key != null) {
@@ -67,6 +66,9 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
         return identity;
       },
     );
+
+    server.terminal = terminal;
+    server.client = client;
   }
 
   void onInput(String input) {
@@ -94,4 +96,5 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
 
   @override
   bool get wantKeepAlive => true;
+
 }

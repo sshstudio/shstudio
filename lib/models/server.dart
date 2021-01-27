@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartssh/client.dart';
 import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/models/snippet.dart';
+import 'package:xterm/xterm.dart';
 
 class ServerDto {
   String id;
@@ -42,12 +43,12 @@ class Server {
   String url;
   String login;
   String password;
-
   int port = 22;
-
   String key;
-
   List<Snippet> snippets = [];
+
+  Terminal terminal;
+  SSHClient client;
 
   String getKeyOrPassword() {
     if (key != null) {

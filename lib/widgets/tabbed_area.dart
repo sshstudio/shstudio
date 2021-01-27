@@ -89,7 +89,7 @@ class _TabbedAreaState extends State<TabbedArea> with TickerProviderStateMixin, 
   List<Widget> _tabsContent(Connections pool) {
     return pool == null ? [] : pool.connections.entries.map((MapEntry<String, Server> entry) => Container(
       child: Center(
-        child: SshTerminal(entry.value, entry.key),
+        child: SshTerminal(entry.value),
       ),
     )).toList();
 

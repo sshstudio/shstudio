@@ -1,3 +1,5 @@
+import 'package:rxdart/rxdart.dart';
+import 'package:sshstudio/main.dart';
 import 'package:sshstudio/models/server_folder.dart';
 
 class Snippet {
@@ -48,4 +50,20 @@ class Snippet {
     }
     return ServerFolder.save(ServerFolder.structure);
   }
+}
+
+class SnippetsListener {
+  BehaviorSubject<SnippetsList> onChange;
+
+  SnippetsListener(SnippetsList events)
+      : this.onChange = BehaviorSubject<SnippetsList>.seeded(events);
+}
+
+class SnippetsList {
+  bool _inc = false;
+  void update() {
+    _inc = !_inc;
+    snippetsListener.onChange.value = this;
+  }
+  
 }

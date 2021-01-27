@@ -13,6 +13,8 @@ class Connections {
 
   Server activeConnection = Server('', '', '', '','', snippets: []);
 
+
+
   Map<String, Server> connections = {};
 
   bool openConnection(Server server) {

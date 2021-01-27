@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sshstudio/models/server.dart';
@@ -13,24 +15,29 @@ class SnippetsDrawer extends StatelessWidget {
   }) : super(key: key);
 
   void onUpdate() {
-
+    snippetsList.update();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: connectionsListener.onChange,
-        builder: (context, snapshot) {
-          return snapshot.data == null
+        builder: (context, connectionsSnapshot) {
+          return connectionsSnapshot.data == null
               ? Container()
-              : snapshot.data.activeConnection.id != ''
-                  ? Drawer(
-                      child: ListView(
-                        // Important: Remove any padding from the ListView.
-                        padding: EdgeInsets.zero,
-                        children: _drawerContent(context, snapshot.data.activeConnection),
-                      ),
-                    )
+              : connectionsSnapshot.data.activeConnection.id != ''
+                  ? StreamBuilder(
+                    stream: snippetsListener.onChange,
+                    builder: (context, snapshot) {
+                      return Drawer(
+                          child: ListView(
+                            // Important: Remove any padding from the ListView.
+                            padding: EdgeInsets.zero,
+                            children: _drawerContent(context, connectionsSnapshot.data.activeConnection),
+                          ),
+                        );
+                    }
+                  )
                   : Container();
         });
   }
@@ -38,8 +45,8 @@ class SnippetsDrawer extends StatelessWidget {
   List<Widget> _drawerContent(context, Server server) {
     Server connection = connectionsPool.activeConnection;
     List<Widget> list = [
-
        Row(
+         mainAxisAlignment: MainAxisAlignment.center,
          children: [
            Text('Snippets for ' + connection.title),
            IconButton(
@@ -120,9 +127,7 @@ class SnippetsDrawer extends StatelessWidget {
         ),
       ),
       onTap: () {
-        // Update the state of the app.
-        // ...
-        print('tap ' + snippet.title);
+        server.client?.sendChannelData(utf8.encode(snippet.command+'\n'));
       },
     );
   }
