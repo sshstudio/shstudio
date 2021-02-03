@@ -6,6 +6,7 @@ import 'package:sentry/sentry.dart';
 import 'package:sshstudio/models/connections.dart';
 import 'package:sshstudio/models/snippet.dart';
 import 'package:sshstudio/screen/main_screen.dart';
+import 'package:sshstudio/widgets/data_access.dart';
 
 Connections connectionsPool = Connections();
 final ConnectionsListener connectionsListener  = ConnectionsListener(connectionsPool);
@@ -32,13 +33,15 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Ssh Studio',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return DataAccess(
+      child: MaterialApp(
+        title: 'Ssh Studio',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: MainScreen(), // MyHomePage(),
       ),
-      home: MainScreen(), // MyHomePage(),
     );
   }
 }

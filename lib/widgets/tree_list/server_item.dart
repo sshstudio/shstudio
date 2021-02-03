@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/utils/constants.dart';
+import 'package:sshstudio/widgets/data_access.dart';
 import 'package:sshstudio/widgets/modal/server_form_window.dart';
 
 import '../../main.dart';
@@ -10,15 +11,9 @@ class ServerItem extends StatelessWidget {
   final Server server;
   final double padding;
   final String folderId;
-  final Function onUpdate;
   final bool active;
 
-  ServerItem(
-      {this.server,
-      this.padding,
-      this.folderId,
-      this.onUpdate,
-      this.active = false});
+  ServerItem({this.server, this.padding, this.folderId, this.active = false});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +34,11 @@ class ServerItem extends StatelessWidget {
                     child: Text(
                       server.title,
                       style: TextStyle(
-                          color: snapshot.data != null ? snapshot.data.activeConnection.id == server.id
-                              ? Colors.lightBlue
-                              : Colors.black: Colors.black),
+                          color: snapshot.data != null
+                              ? snapshot.data.activeConnection.id == server.id
+                                  ? Colors.lightBlue
+                                  : Colors.black
+                              : Colors.black),
                     ),
                   ),
                   PopupMenuButton(
@@ -69,9 +66,7 @@ class ServerItem extends StatelessWidget {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return ServerFormWindow(
-                                        ServerDto.fromServer(server),
-                                        folderId,
-                                        onUpdate);
+                                        ServerDto.fromServer(server), folderId);
                                   });
                             },
                             child: Row(
@@ -87,7 +82,7 @@ class ServerItem extends StatelessWidget {
                           child: GestureDetector(
                               onTap: () {
                                 server.delete();
-                                onUpdate();
+                                DataAccess.of(context).updateList();
                               },
                               child: Row(
                                 children: [

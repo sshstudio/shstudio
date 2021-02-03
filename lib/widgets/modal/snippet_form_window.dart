@@ -18,9 +18,6 @@ class SnippetFormWindow extends StatelessWidget {
 
     var data = snippet == null ? Snippet((new Uuid()).v4().toString(), null, null) : snippet;
     data.serverId = serverId;
-
-    print(data.title);
-
     return AlertDialog(
       content: Stack(
         children: <Widget>[

@@ -2,16 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server.dart';
 
+import '../data_access.dart';
 import '../file_select.dart';
 
 class ServerFormWindow extends StatelessWidget {
   final String folderId;
 
-  final onSuccess;
 
   final ServerDto server;
 
-  ServerFormWindow(this.server, this.folderId, this.onSuccess);
+  ServerFormWindow(this.server, this.folderId);
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +149,7 @@ class ServerFormWindow extends StatelessWidget {
                             )
                               ..saveToFolder(folderId);
 
-                            onSuccess();
+                            DataAccess.of(context).updateList();
 
                             Navigator.of(context).pop();
                           }
