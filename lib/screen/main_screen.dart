@@ -31,7 +31,9 @@ class _MainScreenState extends State<MainScreen> {
       final paths = value.paths;
       for (int i = 0; i < paths.length; i++) {
         final path = paths[i];
-        Storage.saveToFile(path, jsonEncode(Storage.getServers()));
+        Storage.getServers().then((servers) {
+          Storage.saveToFile(path, jsonEncode(servers), crypt: false);
+        });
       }
     });
   }
