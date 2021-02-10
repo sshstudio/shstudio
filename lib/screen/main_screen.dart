@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/utils/storage.dart';
+import 'package:sshstudio/widgets/data_access.dart';
 import 'package:sshstudio/widgets/drawer/snippets.dart';
 import 'package:sshstudio/widgets/single_child_scroll_view_with_scrollbar.dart';
 import 'package:sshstudio/widgets/split_view.dart';
@@ -45,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
       for (int i = 0; i < paths.length; i++) {
         final path = paths[i];
 
-        Storage.readFile(path).then((value) {
+        Storage.readFile(path, crypt: false).then((value) {
           setState(() {
             _upd = !_upd;
           });
@@ -83,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     IconButton(
                       icon: Icon(Icons.arrow_downward),
-                      onPressed: import,
+                      onPressed: () {import(); StateContainer.of(context).state.updateList(); },
                     ),
                   ],
                 ),

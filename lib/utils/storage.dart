@@ -14,7 +14,7 @@ class Storage {
   static Future<List<ServerFolder>> getServers() {
     return getApplicationSupportDirectory().then((dirName) {
       print(dirName);
-      var file = dirName.path + Platform.pathSeparator + 'servers.json';
+      var file = dirName.path + Platform.pathSeparator + (kReleaseMode ? 'p_' : 'd_') + 'servers.json';
       return readFile(file).then((value) => ServerFolder.fromJson(jsonDecode(value)));
     });
   }
@@ -32,7 +32,7 @@ class Storage {
 
   static Future<List<ServerFolder>> saveServers(String servers) {
     return getApplicationSupportDirectory().then((dirName) {
-      var file = dirName.path + Platform.pathSeparator + 'servers.json';
+      var file = dirName.path + Platform.pathSeparator + (kReleaseMode ? 'p_' : 'd_') + 'servers.json';
       saveToFile(file, servers);
       return ServerFolder.fromJson(jsonDecode(servers));
     });
