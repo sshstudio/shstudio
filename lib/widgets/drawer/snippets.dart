@@ -20,26 +20,28 @@ class SnippetsDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: connectionsListener.onChange,
-        builder: (context, connectionsSnapshot) {
-          return connectionsSnapshot.data == null
-              ? Container()
-              : connectionsSnapshot.data.activeConnection.id != ''
-                  ? StreamBuilder(
-                    stream: snippetsListener.onChange,
-                    builder: (context, snapshot) {
-                      return Drawer(
-                          child: ListView(
-                            // Important: Remove any padding from the ListView.
-                            padding: EdgeInsets.zero,
-                            children: _drawerContent(context, connectionsSnapshot.data.activeConnection),
-                          ),
-                        );
-                    }
-                  )
-                  : Container();
-        });
+    return SafeArea(
+      child: StreamBuilder(
+          stream: connectionsListener.onChange,
+          builder: (context, connectionsSnapshot) {
+            return connectionsSnapshot.data == null
+                ? Container()
+                : connectionsSnapshot.data.activeConnection.id != ''
+                    ? StreamBuilder(
+                      stream: snippetsListener.onChange,
+                      builder: (context, snapshot) {
+                        return Drawer(
+                            child: ListView(
+                              // Important: Remove any padding from the ListView.
+                              padding: EdgeInsets.zero,
+                              children: _drawerContent(context, connectionsSnapshot.data.activeConnection),
+                            ),
+                          );
+                      }
+                    )
+                    : Container();
+          }),
+    );
   }
 
   List<Widget> _drawerContent(context, Server server) {

@@ -56,7 +56,7 @@ class _TabbedAreaState extends State<TabbedArea> with TickerProviderStateMixin, 
                 ),
               ),
               Container(
-                  height: MediaQuery.of(context).size.height - 48 - 40, //height of TabBarView && height of top menu
+                  height: MediaQuery.of(context).size.height - (isMobile ? 161 : 88),// - 48 - 40, //height of TabBarView && height of top menu
                   decoration: BoxDecoration(
                       border: Border(top: BorderSide(color: Colors.grey, width: 0.5))
                   ),

@@ -13,16 +13,16 @@ import 'package:sshstudio/widgets/split_view.dart';
 import 'package:sshstudio/widgets/tabbed_area.dart';
 import 'package:sshstudio/widgets/tree_list/tree_list.dart';
 
-import '../main.dart';
+import '../../main.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreenDesktop extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return new _MainScreenState();
+    return new _MainScreenDesktopState();
   }
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenDesktopState extends State<MainScreenDesktop> {
   var _upd = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
