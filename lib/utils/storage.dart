@@ -14,7 +14,7 @@ class Storage {
   static Future<List<ServerFolder>> getServers() {
     return getApplicationSupportDirectory().then((dirName) {
       print(dirName);
-      var file = dirName.path + Platform.pathSeparator + (kReleaseMode ? 'p_' : 'd_') + 'servers.json';
+      var file = dirName.path + Platform.pathSeparator + 'servers.json';
       return readFile(file).then((value) => ServerFolder.fromJson(jsonDecode(value)));
     });
   }
@@ -32,7 +32,7 @@ class Storage {
 
   static Future<List<ServerFolder>> saveServers(String servers) {
     return getApplicationSupportDirectory().then((dirName) {
-      var file = dirName.path + Platform.pathSeparator + (kReleaseMode ? 'p_' : 'd_') + 'servers.json';
+      var file = dirName.path + Platform.pathSeparator + 'servers.json';
       saveToFile(file, servers);
       return ServerFolder.fromJson(jsonDecode(servers));
     });
@@ -53,6 +53,7 @@ class Storage {
 
   static String crypt(String data)
   {
+    return data;
     final key = cr.Key.fromLength(32);
     final iv = cr.IV.fromLength(16);
     final encrypter = cr.Encrypter(cr.AES(key));
@@ -63,6 +64,7 @@ class Storage {
 
   static String decrypt(String data)
   {
+    return data;
     final key = cr.Key.fromLength(32);
     final iv = cr.IV.fromLength(16);
     final encrypter = cr.Encrypter(cr.AES(key));
