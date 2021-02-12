@@ -4,9 +4,11 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sentry/sentry.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sshstudio/models/connections.dart';
 import 'package:sshstudio/models/snippet.dart';
 import 'package:sshstudio/screen/desktop/main_screen.dart';
+import 'package:sshstudio/screen/desktop/settings_screen.dart';
 import 'package:sshstudio/screen/mobile/main_screen.dart';
 import 'package:sshstudio/widgets/data_access.dart';
 
@@ -23,6 +25,10 @@ Future<void> main() async {
 
   await DotEnv().load('.env');
   final sentry = SentryClient(dsn: DotEnv().env['SENTRY_DSN']);
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var s3key = prefs.getString(PREFS_KEY_S3_KEY);
+print(s3key);
 
   runZonedGuarded(
     () => runApp(MyApp()),

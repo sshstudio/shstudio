@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:file_chooser/file_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server_folder.dart';
+import 'package:sshstudio/screen/desktop/settings_screen.dart';
 import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/utils/storage.dart';
 import 'package:sshstudio/widgets/data_access.dart';
@@ -78,6 +79,15 @@ class _MainScreenDesktopState extends State<MainScreenDesktop> {
               children: [
                 Row(
                   children: [
+                    IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SettingsScreen()),
+                        );
+                      },
+                    ),
                     IconButton(
                       icon: Icon(Icons.arrow_upward),
                       onPressed: export,
