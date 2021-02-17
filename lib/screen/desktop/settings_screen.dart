@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const PREFS_KEY_S3_KEY = 's3key';
+const PREFS_KEY_S3_SECRET = 's3secret';
+const PREFS_KEY_S3_BUCKET = 's3bucket';
+const PREFS_KEY_S3_REGION = 's3region';
+const PREFS_KEY_S3_HOST = 's3host';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -54,10 +58,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       )
                     ]),
-                    TableRow(children: [Text('s3 secret'), TextFormField()]),
-                    TableRow(children: [Text('s3 bucket'), TextFormField()]),
-                    TableRow(children: [Text('s3 region'), TextFormField()]),
-                    TableRow(children: [Text('s3 host'), TextFormField()]),
+                    TableRow(children: [
+                      Text('s3 secret'),
+                      TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Folder name cant be blank';
+                          }
+                          prefs.setString(PREFS_KEY_S3_SECRET, value);
+                          return null;
+                        },
+                      )
+                    ]),
+                    TableRow(children: [
+                      Text('s3 bucket'),
+                      TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Folder name cant be blank';
+                          }
+                          prefs.setString(PREFS_KEY_S3_BUCKET, value);
+                          return null;
+                        },
+                      )
+                    ]),
+                    TableRow(children: [
+                      Text('s3 region'),
+                      TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Folder name cant be blank';
+                          }
+                          prefs.setString(PREFS_KEY_S3_REGION, value);
+                          return null;
+                        },
+                      )
+                    ]),
+                    TableRow(children: [
+                      Text('s3 host'),
+                      TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Folder name cant be blank';
+                          }
+                          prefs.setString(PREFS_KEY_S3_HOST, value);
+                          return null;
+                        },
+                      )
+                    ]),
                     TableRow(children: [
                       ElevatedButton(
                         child: Text('save'),
@@ -66,7 +114,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             _formKey.currentState.save();
                           }
                         },
-                      ),Container()
+                      ),
+                      Container()
                     ])
                   ],
                 ),
