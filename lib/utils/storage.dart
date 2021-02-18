@@ -12,10 +12,9 @@ class Storage {
   }
 
   static Future<List<ServerFolder>> getServers() {
-    return getApplicationSupportDirectory().then((dirName) {
-      print(dirName);
-      var file = dirName.path + Platform.pathSeparator + 'servers.json';
-      return readFile(file).then((value) => ServerFolder.fromJson(jsonDecode(value)));
+    return getServersFile().then((filename){
+      return readFile(filename).then((value) =>
+          ServerFolder.fromJson(jsonDecode(value)));
     });
   }
 
@@ -31,17 +30,16 @@ class Storage {
   }
 
   static Future<List<ServerFolder>> saveServers(String servers) {
-    return getApplicationSupportDirectory().then((dirName) {
-      var file = dirName.path + Platform.pathSeparator + 'servers.json';
-      saveToFile(file, servers);
+    return getServersFile().then((filename) {
+      saveToFile(filename, servers);
       return ServerFolder.fromJson(jsonDecode(servers));
     });
   }
 
-  static Future<String> saveToFile(String filename, String content, {crypt = true}) {
+  static Future<String> saveToFile(String filename, String content,
+      {crypt = true}) {
     File fd = File(filename);
     return fd.exists().then((exist) async {
-
       if (kReleaseMode && crypt) {
         content = crypt(content);
       }
@@ -51,8 +49,14 @@ class Storage {
     });
   }
 
-  static String crypt(String data)
-  {
+  static Future<String> getServersFile() {
+    return getApplicationSupportDirectory().then((dirName) {
+      var file = dirName.path + Platform.pathSeparator + 'servers.json';
+      return file;
+    });
+  }
+
+  static String crypt(String data) {
     return data;
     final key = cr.Key.fromLength(32);
     final iv = cr.IV.fromLength(16);
@@ -62,8 +66,7 @@ class Storage {
     return encrypted.base16;
   }
 
-  static String decrypt(String data)
-  {
+  static String decrypt(String data) {
     return data;
     final key = cr.Key.fromLength(32);
     final iv = cr.IV.fromLength(16);
