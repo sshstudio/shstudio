@@ -4,7 +4,10 @@ import 'dart:io';
 import 'package:encrypt/encrypt.dart' as cr;
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sshstudio/models/server_folder.dart';
+
+const PREFS_KEY_LAST_SYNC_TIME = 'last_sync_time';
 
 class Storage {
   static Future<Directory> getSettingsDir() {
@@ -32,6 +35,11 @@ class Storage {
   static Future<List<ServerFolder>> saveServers(String servers) {
     return getServersFile().then((filename) {
       saveToFile(filename, servers);
+
+      SharedPreferences.getInstance().then((prefs){
+        prefs.setInt(PREFS_KEY_LAST_SYNC_TIME, DateTime.now().millisecondsSinceEpoch);
+      });
+      
       return ServerFolder.fromJson(jsonDecode(servers));
     });
   }
