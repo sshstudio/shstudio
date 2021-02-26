@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/models/server_folder.dart';
+import 'package:sshstudio/models/snippet.dart';
 import 'package:sshstudio/services/s3.dart';
 import 'package:sshstudio/utils/storage.dart';
 
@@ -118,17 +119,34 @@ class Sync {
 
   Future<List<ServerFolder>> _merge(String pathMain, String pathSecondary) async {
 
+
+    List<ServerFolder> mainFolders = ServerFolder.fromJson(jsonDecode(await Storage.readFile(pathMain + Platform.pathSeparator + 'servers.json')));
+    List<ServerFolder> secondaryFolders = ServerFolder.fromJson(jsonDecode(await Storage.readFile(pathSecondary + Platform.pathSeparator + 'servers.json')));
+
+    return mergeLists(mainFolders, secondaryFolders);
+
+  }
+
+  static List<ServerFolder> mergeLists(List<ServerFolder> list1, List<ServerFolder> list2) {
     var result = [];
-
-    List<ServerFolder> mContent = ServerFolder.fromJson(jsonDecode(await Storage.readFile(pathMain + Platform.pathSeparator + 'servers.json')));
-    List<ServerFolder> sContent = ServerFolder.fromJson(jsonDecode(await Storage.readFile(pathSecondary + Platform.pathSeparator + 'servers.json')));
-
-    for(final folder in mContent) {
-      for(final compareFolder in sContent) {
-
+    for(final mainFolder in list1) {
+      var currFolder = ServerFolder.blankFrom(mainFolder);
+      var secondaryFolder = list2.firstWhere((element) => element.id == mainFolder.id);
+      for (final Server mainServer in mainFolder.servers) {
+        var currentServer = Server(mainServer.id, mainServer.title, mainServer.url, mainServer.login, mainServer.password, key: mainServer.key, port: mainServer.port);
+        var secondaryServer = secondaryFolder.servers.firstWhere((element) => element.id == mainServer.id);
+        for (final Snippet secondarySnippet in secondaryServer.snippets) {
+          if (mainServer.snippets.firstWhere((element) => element.id == secondarySnippet.id) == null) {
+            currentServer.snippets.add(secondarySnippet);
+          }
+        }
+        for (final Snippet mainSnippet in mainServer.snippets) {
+          currentServer.snippets.add(mainSnippet);
+        }
+        currFolder.servers.add(currentServer);
       }
+      result.add(currFolder);
     }
-
     return result;
   }
 

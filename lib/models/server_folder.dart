@@ -22,6 +22,13 @@ class ServerFolder {
     return folder;
   }
 
+  factory ServerFolder.blankFrom(ServerFolder folder) {
+    ServerFolder newFolder = new ServerFolder();
+    newFolder.title = folder.title;
+    newFolder.id = folder.id;
+    return newFolder;
+  }
+
   static List<ServerFolder> fromJson(List<dynamic> json) {
     var uuid = Uuid();
     return json.map((e) {
