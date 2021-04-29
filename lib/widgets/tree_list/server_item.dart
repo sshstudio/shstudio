@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sshstudio/models/server.dart';
-import 'package:sshstudio/screen/mobile/server_tabs.dart';
 import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/widgets/data_access.dart';
 import 'package:sshstudio/widgets/modal/server_form_window.dart';
@@ -114,11 +113,7 @@ class ServerItem extends StatelessWidget {
     }
 
     if (isMobile) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ServerTabs()),
-      );
+      Navigator.pop(context);
     }
-
   }
 }
