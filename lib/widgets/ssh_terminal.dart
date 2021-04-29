@@ -7,6 +7,7 @@ import 'package:dartssh/pem.dart';
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/utils/constants.dart';
+import 'package:sshstudio/widgets/keyboard_listener.dart';
 import 'package:xterm/frontend/terminal_view.dart';
 import 'package:xterm/xterm.dart';
 
@@ -84,9 +85,12 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
           color: Color(_terminalTheme.background.value),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TerminalView(
-              terminal: terminal,
-              autofocus: true,
+            child:  KeyboardListener(
+              textController: TextEditingController(),
+                child: TerminalView(
+                  terminal: terminal,
+                  autofocus: true,
+                )
             ),
           ),
         ),
