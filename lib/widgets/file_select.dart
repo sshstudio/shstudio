@@ -8,21 +8,26 @@ class FileSelect extends StatefulWidget {
   final String initialValue;
   final InputDecoration decoration;
 
-  FileSelect({this.validator, this.button, this.width, this.initialValue, this.decoration});
+  FileSelect(
+      {this.validator,
+      this.button,
+      this.width,
+      this.initialValue,
+      this.decoration});
 
   @override
   _FileSelectState createState() => _FileSelectState();
 }
 
 class _FileSelectState extends State<FileSelect> {
-
   String _errorText = '';
 
   @override
   Widget build(BuildContext context) {
-
     var _controller = TextEditingController(text: widget.initialValue);
-    var decoration =  widget.decoration.copyWith(errorStyle:TextStyle(height: 0),);
+    var decoration = widget.decoration.copyWith(
+      errorStyle: TextStyle(height: 0),
+    );
 
     return Column(
       children: [
@@ -43,19 +48,21 @@ class _FileSelectState extends State<FileSelect> {
               ),
             ),
             ButtonTheme(
-              height: 55,
-              buttonColor: Colors.grey[100],
-              child: ElevatedButton(
-                onPressed: () => {
-                  showOpenPanel(
-                          canSelectDirectories: false, allowsMultipleSelection: false)
-                      .then((FileChooserResult result) => setState(() {
-                            _controller.text = result.paths[0];
-                          }))
-                },
-                child: widget.button,
-              ),
-            ),
+                height: 55,
+                buttonColor: Colors.grey[100],
+                child: ElevatedButton(
+                  onPressed: () => {
+                    showOpenPanel(
+                            canSelectDirectories: false,
+                            allowsMultipleSelection: false)
+                        .then((FileChooserResult result) {
+                      if (result.paths.length > 0) {
+                        _controller.text = result.paths[0];
+                      }
+                    })
+                  },
+                  child: widget.button,
+                )),
           ],
         ),
         Row(

@@ -7,23 +7,21 @@ import 'package:xterm/xterm.dart';
 
 class ServerDto {
   String id;
-  String title;
-  String url;
-  String login;
-  String password;
-
+  String title = '';
+  String url = '';
+  String login = '';
+  String password = '';
   int port = 22;
-
-  String key;
+  String key = '';
 
   ServerDto(
-      {this.id,
-      this.title,
-      this.url,
-      this.login,
-      this.password,
-      port = 22,
-      this.key});
+      {this.id = '',
+      this.title = '',
+      this.url = '',
+      this.login = '',
+      this.password = '',
+      this.port = 22,
+      this.key = ''});
 
   factory ServerDto.fromServer(Server server) {
     return ServerDto(
