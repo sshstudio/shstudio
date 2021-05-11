@@ -48,6 +48,7 @@ class ServerFolderItem extends StatelessWidget {
                         value: 'add folder to ' + folder.title,
                         child: GestureDetector(
                             onTap: () {
+                              Navigator.pop(context);
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -68,11 +69,12 @@ class ServerFolderItem extends StatelessWidget {
                         value: 'add server to ' + folder.title,
                         child: GestureDetector(
                             onTap: () {
+                              Navigator.pop(context);
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return ServerFormWindow(
-                                        ServerDto(), folder.id);
+                                        ServerDto.empty(), folder.id);
                                   });
                             },
                             child: Row(

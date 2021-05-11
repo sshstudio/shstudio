@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server.dart';
 
@@ -7,7 +6,6 @@ import '../file_select.dart';
 
 class ServerFormWindow extends StatelessWidget {
   final String folderId;
-
 
   final ServerDto server;
 
@@ -138,20 +136,14 @@ class ServerFormWindow extends StatelessWidget {
                         child: Text("Save"),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            Server(
-                                server.id,
-                                data.title,
-                                data.url,
-                                data.login,
+                            Server(server.id, data.title, data.url, data.login,
                                 data.password,
-                              key: data.key,
-                              port: data.port
-                            )
-                              ..saveToFolder(folderId);
+                                key: data.key, port: data.port)
+                              ..saveToFolder(folderId).then((value) {
+                                DataAccess.of(context).updateList();
 
-                            DataAccess.of(context).updateList();
-
-                            Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              });
                           }
                         },
                       ),
@@ -161,7 +153,6 @@ class ServerFormWindow extends StatelessWidget {
                       child: ElevatedButton(
                         child: Text("Close"),
                         onPressed: () {
-
                           Navigator.of(context).pop();
                           // if (_formKey.currentState.validate()) {
                           //   _formKey.currentState.save();

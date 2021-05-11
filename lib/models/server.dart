@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartssh/client.dart';
 import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/models/snippet.dart';
+import 'package:uuid/uuid.dart';
 import 'package:xterm/xterm.dart';
 
 class ServerDto {
@@ -22,6 +23,10 @@ class ServerDto {
       this.password = '',
       this.port = 22,
       this.key = ''});
+
+  factory ServerDto.empty() {
+    return ServerDto(id: (Uuid()).v4());
+  }
 
   factory ServerDto.fromServer(Server server) {
     return ServerDto(
@@ -97,23 +102,23 @@ class Server {
     return server;
   }
 
-  void saveToFolder(String folderId) {
+  Future<List<ServerFolder>> saveToFolder(String folderId) {
     for (final folder in ServerFolder.structure) {
       if (folder.id == folderId) {
         folder.servers.removeWhere((element) => element.id == this.id);
         folder.servers.add(this);
-        ServerFolder.save(ServerFolder.structure);
-        break;
+        print("Save " + folderId);
+        return ServerFolder.save(ServerFolder.structure);
       }
     }
+    return ServerFolder.getList();
   }
 
   Future<List<ServerFolder>> delete() {
     var struct = ServerFolder.structure;
     for (ServerFolder currentFolder in struct) {
       var servers = currentFolder.servers;
-      servers.removeWhere(
-              (element) => element.id == this.id);
+      servers.removeWhere((element) => element.id == this.id);
       currentFolder.servers = servers;
     }
     return ServerFolder.save(struct);

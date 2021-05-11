@@ -48,6 +48,7 @@ class ServerItem extends StatelessWidget {
                           value: 'edit ' + server.title,
                           child: GestureDetector(
                             onTap: () {
+                              Navigator.pop(context);
                               _onServerTap(server, context);
                             },
                             child: Row(
@@ -62,6 +63,7 @@ class ServerItem extends StatelessWidget {
                           value: 'edit ' + server.title,
                           child: GestureDetector(
                             onTap: () {
+                              Navigator.pop(context);
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -81,6 +83,7 @@ class ServerItem extends StatelessWidget {
                           value: 'remove ' + server.title,
                           child: GestureDetector(
                               onTap: () {
+                                Navigator.pop(context);
                                 server.delete();
                                 DataAccess.of(context).updateList();
                               },
