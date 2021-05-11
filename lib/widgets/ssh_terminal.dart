@@ -86,6 +86,7 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child:  KeyboardListener(
+              terminal: terminal,
               textController: TextEditingController(),
                 child: TerminalView(
                   terminal: terminal,

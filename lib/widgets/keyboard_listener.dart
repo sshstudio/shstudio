@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:xterm/terminal/terminal.dart';
 
 class KeyboardListener extends StatelessWidget {
   final Widget child;
   final TextEditingController textController;
+  final Terminal terminal;
 
-  KeyboardListener({@required this.child, this.textController});
+  KeyboardListener({@required this.child, this.textController, @required this.terminal});
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +15,16 @@ class KeyboardListener extends StatelessWidget {
 
       actions: {
         InsertTabIntent: InsertTabAction(),
-        InsertUp: InsertUpAction()
+        InsertUpIntent: InsertUpAction(),
+        CopyIntent: CopyAction(),
+        PasteIntent: PasteAction(),
       },
       child: Shortcuts(
         shortcuts: {
           LogicalKeySet(LogicalKeyboardKey.tab): InsertTabIntent(2, textController),
-          LogicalKeySet(LogicalKeyboardKey.arrowUp): InsertUp(textController)
+          LogicalKeySet(LogicalKeyboardKey.arrowUp): InsertUpIntent(textController),
+          LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyC): CopyIntent(terminal),
+          LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyV): PasteIntent(terminal),
         },
         child: child
       ),
@@ -26,14 +32,47 @@ class KeyboardListener extends StatelessWidget {
   }
 }
 
-class InsertUp extends Intent {
-  const InsertUp(this.textController);
+class PasteIntent extends Intent {
+  const PasteIntent(this.terminal);
+  final Terminal terminal;
+}
+
+class PasteAction extends Action {
+  @override
+  Object invoke(covariant PasteIntent intent) {
+    Clipboard.getData(Clipboard.kTextPlain)
+        .then((ClipboardData value) {
+          print(value);
+          intent.terminal.paste(value.text);
+        });
+    return '';
+  }
+}
+
+class CopyIntent extends Intent {
+  const CopyIntent(this.terminal);
+  final Terminal terminal;
+}
+
+class CopyAction extends Action {
+  @override
+  Object invoke(covariant CopyIntent intent) {
+    print(intent.terminal.getSelectedText());
+    Clipboard.setData(ClipboardData(text: intent.terminal.getSelectedText()));
+    return '';
+  }
+}
+
+class InsertUpIntent extends Intent {
+  const InsertUpIntent(this.textController);
   final TextEditingController textController;
 }
 
 class InsertUpAction extends Action {
   @override
   Object invoke(covariant Intent intent) {
+
+    print('UP KEY');
     if (intent is InsertTabIntent) {
       final oldValue = intent.textController.value;
       final newComposing = TextRange.collapsed(oldValue.composing.start);
