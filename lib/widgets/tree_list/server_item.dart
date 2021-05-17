@@ -83,9 +83,18 @@ class ServerItem extends StatelessWidget {
                           value: 'remove ' + server.title,
                           child: GestureDetector(
                               onTap: () {
-                                Navigator.pop(context);
-                                server.delete();
-                                DataAccess.of(context).updateList();
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                    Text('Delete ' + server.title),
+                                  ),
+                                );
+
+                                server.delete().then((value) {
+                                  DataAccess.of(context).updateList();
+                                });
+                                // Navigator.pop(context);
                               },
                               child: Row(
                                 children: [

@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:encrypt/encrypt.dart' as cr;
-import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sshstudio/models/server_folder.dart';
@@ -24,11 +22,7 @@ class Storage {
   static Future<String> readFile(String filename, {crypt = true}) {
     File fd = File(filename);
     return fd.exists().then((exist) async {
-      String content = await fd.readAsString();
-      if (kReleaseMode) {
-        content = decrypt(content);
-      }
-      return content;
+      return fd.readAsStringSync();
     });
   }
 
@@ -39,48 +33,21 @@ class Storage {
       SharedPreferences.getInstance().then((prefs){
         prefs.setInt(PREFS_KEY_LAST_SYNC_TIME, DateTime.now().millisecondsSinceEpoch);
       });
-      
+
       return ServerFolder.fromJson(jsonDecode(servers));
     });
   }
 
-  static Future<String> saveToFile(String filename, String content,
-      {crypt = true}) {
+  static String saveToFile(String filename, String content, {crypt = true}) {
     File fd = File(filename);
-    return fd.exists().then((exist) async {
-      if (kReleaseMode && crypt) {
-        content = crypt(content);
-      }
+    fd.writeAsStringSync(content, flush: true);
 
-      fd.writeAsString(content);
-      return content;
-    });
+    return content;
   }
 
   static Future<String> getServersFile() {
     return getApplicationSupportDirectory().then((dirName) {
-      var file = dirName.path + Platform.pathSeparator + 'servers.json';
-      return file;
+      return dirName.path + Platform.pathSeparator + 'pservers.json';
     });
-  }
-
-  static String crypt(String data) {
-    return data;
-    final key = cr.Key.fromLength(32);
-    final iv = cr.IV.fromLength(16);
-    final encrypter = cr.Encrypter(cr.AES(key));
-    final encrypted = encrypter.encrypt(data, iv: iv);
-
-    return encrypted.base16;
-  }
-
-  static String decrypt(String data) {
-    return data;
-    final key = cr.Key.fromLength(32);
-    final iv = cr.IV.fromLength(16);
-    final encrypter = cr.Encrypter(cr.AES(key));
-
-    final decrypted = encrypter.decrypt16(data, iv: iv);
-    return decrypted;
   }
 }
