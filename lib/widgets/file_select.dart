@@ -1,4 +1,6 @@
-import 'package:file_chooser/file_chooser.dart';
+import 'dart:io';
+
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 
 class FileSelect extends StatefulWidget {
@@ -51,15 +53,9 @@ class _FileSelectState extends State<FileSelect> {
                 height: 55,
                 buttonColor: Colors.grey[100],
                 child: ElevatedButton(
-                  onPressed: () => {
-                    showOpenPanel(
-                            canSelectDirectories: false,
-                            allowsMultipleSelection: false)
-                        .then((FileChooserResult result) {
-                      if (result.paths.length > 0) {
-                        _controller.text = result.paths[0];
-                      }
-                    })
+                  onPressed: () =>
+                  {
+                    filePick(_controller)
                   },
                   child: widget.button,
                 )),
@@ -75,5 +71,22 @@ class _FileSelectState extends State<FileSelect> {
         )
       ],
     );
+  }
+
+  Future<void> filePick(TextEditingController _controller) async {
+    FilesystemPicker.open(
+      title: 'Open file',
+      context: context,
+      rootDirectory: Directory(Platform.pathSeparator),
+      fsType: FilesystemType.file,
+      folderIconColor: Colors.teal,
+      // allowedExtensions: [''],
+      fileTileSelectMode: FileTileSelectMode.checkButton,
+      // requestPermission: () async =>
+      // await Permission.storage.request().isGranted,
+    ).then((result) {
+      if (result != null) {
+        _controller.text = result;
+      }});
   }
 }

@@ -31,9 +31,7 @@ dependencies:
   rxdart: ^0.27.0
   uuid: ^3.0.4
   file_chooser:
-    git:
-      url: git://github.com/google/flutter-desktop-embedding.git
-      path: plugins/file_chooser
+  filesystem_picker: ^1.0.3
   shared_preferences:
     git:
       url: git://github.com/flutter/plugins.git
