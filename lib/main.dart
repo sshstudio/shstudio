@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:sentry/sentry.dart';
 import 'package:sshstudio/models/connections.dart';
 import 'package:sshstudio/models/snippet.dart';
@@ -21,8 +21,8 @@ bool isMobile = false == isDesktop;
 
 Future<void> main() async {
 
-  await DotEnv().load('.env');
-  final sentry = SentryClient(dsn: DotEnv().env['SENTRY_DSN']);
+  await DotEnv.load(fileName: ".env");
+  final sentry = SentryClient(dsn: DotEnv.env['SENTRY_DSN']);
 
   runZonedGuarded(
     () => runApp(MyApp()),
