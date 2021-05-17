@@ -35,6 +35,7 @@ class ServerFolderItem extends StatelessWidget {
                                   (element) => element.id == folder.id);
                               ServerFolder.save(ServerFolder.structure);
                               DataAccess.of(context).updateList();
+                              Navigator.of(context).pop();
                             },
                             child: Row(
                               children: [
