@@ -24,6 +24,24 @@ class FileSelect extends StatefulWidget {
 
   @override
   _FileSelectState createState() => _FileSelectState();
+
+  static Future<String> pickFile(BuildContext context) {
+    if (isDesktop) {
+      return openFile().then((value) => value.path);
+    } else {
+      return FilesystemPicker.open(
+        title: 'Open file',
+        context: context,
+        rootDirectory: Directory(Platform.pathSeparator),
+        fsType: FilesystemType.file,
+        folderIconColor: darkBlue,
+        // allowedExtensions: [''],
+        fileTileSelectMode: FileTileSelectMode.checkButton,
+        requestPermission: () async =>
+        await Permission.storage.request().isGranted,
+      ).then((result) => result);
+    }
+  }
 }
 
 class _FileSelectState extends State<FileSelect> {
@@ -80,27 +98,10 @@ class _FileSelectState extends State<FileSelect> {
 
   Future<void> filePick(TextEditingController _controller) async {
 
-    pickFile(context).then((value) {
+    FileSelect.pickFile(context).then((value) {
       _controller.text = value;
     });
   }
+
 }
 
-
-Future<String> pickFile(BuildContext context) {
-  if (isDesktop) {
-    return openFile().then((value) => value.path);
-  } else {
-    return FilesystemPicker.open(
-      title: 'Open file',
-      context: context,
-      rootDirectory: Directory(Platform.pathSeparator),
-      fsType: FilesystemType.file,
-      folderIconColor: darkBlue,
-      // allowedExtensions: [''],
-      fileTileSelectMode: FileTileSelectMode.checkButton,
-      requestPermission: () async =>
-      await Permission.storage.request().isGranted,
-    ).then((result) => result);
-  }
-}

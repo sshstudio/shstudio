@@ -30,26 +30,16 @@ class _MainScreenDesktopState extends State<MainScreenDesktop> {
 
   export() {
 
-    pickFile(context).then((path) {
+    FileSelect.pickFile(context).then((path) {
       Storage.getServers().then((servers) {
         Storage.saveToFile(path, jsonEncode(servers), crypt: false);
       });
     });
-
-    // showSavePanel(suggestedFileName: 'servers.json').then((value) {
-    //   final paths = value.paths;
-    //   for (int i = 0; i < paths.length; i++) {
-    //     final path = paths[i];
-    //     Storage.getServers().then((servers) {
-    //       Storage.saveToFile(path, jsonEncode(servers), crypt: false);
-    //     });
-    //   }
-    // });
   }
 
   import() {
 
-    pickFile(context).then((path) {
+    FileSelect.pickFile(context).then((path) {
       Storage.readFile(path, crypt: false).then((value) {
         setState(() {
           _upd = !_upd;
@@ -57,21 +47,6 @@ class _MainScreenDesktopState extends State<MainScreenDesktop> {
         return ServerFolder.save(ServerFolder.fromJson(jsonDecode(value)));
       });
     });
-
-    // showOpenPanel(canSelectDirectories: false, allowsMultipleSelection: false)
-    //     .then((value) {
-    //   final paths = value.paths;
-    //   for (int i = 0; i < paths.length; i++) {
-    //     final path = paths[i];
-    //
-    //     Storage.readFile(path, crypt: false).then((value) {
-    //       setState(() {
-    //         _upd = !_upd;
-    //       });
-    //       return ServerFolder.save(ServerFolder.fromJson(jsonDecode(value)));
-    //     });
-    //   }
-    // });
   }
 
   @override
