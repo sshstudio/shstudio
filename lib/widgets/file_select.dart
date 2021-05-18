@@ -1,7 +1,12 @@
 import 'dart:io';
 
+import 'package:file_selector/file_selector.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:sshstudio/utils/constants.dart';
+
+import '../main.dart';
 
 class FileSelect extends StatefulWidget {
   final FormFieldValidator<String> validator;
@@ -74,19 +79,28 @@ class _FileSelectState extends State<FileSelect> {
   }
 
   Future<void> filePick(TextEditingController _controller) async {
-    FilesystemPicker.open(
+
+    pickFile(context).then((value) {
+      _controller.text = value;
+    });
+  }
+}
+
+
+Future<String> pickFile(BuildContext context) {
+  if (isDesktop) {
+    return openFile().then((value) => value.path);
+  } else {
+    return FilesystemPicker.open(
       title: 'Open file',
       context: context,
       rootDirectory: Directory(Platform.pathSeparator),
       fsType: FilesystemType.file,
-      folderIconColor: Colors.teal,
+      folderIconColor: darkBlue,
       // allowedExtensions: [''],
       fileTileSelectMode: FileTileSelectMode.checkButton,
-      // requestPermission: () async =>
-      // await Permission.storage.request().isGranted,
-    ).then((result) {
-      if (result != null) {
-        _controller.text = result;
-      }});
+      requestPermission: () async =>
+      await Permission.storage.request().isGranted,
+    ).then((result) => result);
   }
 }

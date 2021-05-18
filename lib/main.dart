@@ -22,16 +22,12 @@ bool isMobile = false == isDesktop;
 Future<void> main() async {
 
   await DotEnv.load(fileName: ".env");
-  final sentry = SentryClient(dsn: DotEnv.env['SENTRY_DSN']);
 
-  runZonedGuarded(
-    () => runApp(MyApp()),
-    (error, stackTrace) async {
-      await sentry.captureException(
-        exception: error,
-        stackTrace: stackTrace,
-      );
+  await Sentry.init(
+        (options) {
+      options.dsn = DotEnv.env['SENTRY_DSN'];
     },
+    appRunner: () => runApp(MyApp()),
   );
 }
 

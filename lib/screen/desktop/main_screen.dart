@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:file_chooser/file_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/screen/desktop/settings_screen.dart';
@@ -9,6 +8,7 @@ import 'package:sshstudio/utils/constants.dart';
 import 'package:sshstudio/utils/storage.dart';
 import 'package:sshstudio/widgets/data_access.dart';
 import 'package:sshstudio/widgets/drawer/snippets.dart';
+import 'package:sshstudio/widgets/file_select.dart';
 import 'package:sshstudio/widgets/single_child_scroll_view_with_scrollbar.dart';
 import 'package:sshstudio/widgets/split_view.dart';
 import 'package:sshstudio/widgets/tabbed_area.dart';
@@ -29,32 +29,49 @@ class _MainScreenDesktopState extends State<MainScreenDesktop> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   export() {
-    showSavePanel(suggestedFileName: 'servers.json').then((value) {
-      final paths = value.paths;
-      for (int i = 0; i < paths.length; i++) {
-        final path = paths[i];
-        Storage.getServers().then((servers) {
-          Storage.saveToFile(path, jsonEncode(servers), crypt: false);
-        });
-      }
+
+    pickFile(context).then((path) {
+      Storage.getServers().then((servers) {
+        Storage.saveToFile(path, jsonEncode(servers), crypt: false);
+      });
     });
+
+    // showSavePanel(suggestedFileName: 'servers.json').then((value) {
+    //   final paths = value.paths;
+    //   for (int i = 0; i < paths.length; i++) {
+    //     final path = paths[i];
+    //     Storage.getServers().then((servers) {
+    //       Storage.saveToFile(path, jsonEncode(servers), crypt: false);
+    //     });
+    //   }
+    // });
   }
 
   import() {
-    showOpenPanel(canSelectDirectories: false, allowsMultipleSelection: false)
-        .then((value) {
-      final paths = value.paths;
-      for (int i = 0; i < paths.length; i++) {
-        final path = paths[i];
 
-        Storage.readFile(path, crypt: false).then((value) {
-          setState(() {
-            _upd = !_upd;
-          });
-          return ServerFolder.save(ServerFolder.fromJson(jsonDecode(value)));
+    pickFile(context).then((path) {
+      Storage.readFile(path, crypt: false).then((value) {
+        setState(() {
+          _upd = !_upd;
         });
-      }
+        return ServerFolder.save(ServerFolder.fromJson(jsonDecode(value)));
+      });
     });
+
+    // showOpenPanel(canSelectDirectories: false, allowsMultipleSelection: false)
+    //     .then((value) {
+    //   final paths = value.paths;
+    //   for (int i = 0; i < paths.length; i++) {
+    //     final path = paths[i];
+    //
+    //     Storage.readFile(path, crypt: false).then((value) {
+    //       setState(() {
+    //         _upd = !_upd;
+    //       });
+    //       return ServerFolder.save(ServerFolder.fromJson(jsonDecode(value)));
+    //     });
+    //   }
+    // });
   }
 
   @override
