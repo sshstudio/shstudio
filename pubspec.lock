@@ -21,7 +21,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "2.6.1"
   aws_s3_client:
     dependency: "direct main"
     description:
@@ -106,7 +106,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "6c283c4ec076a4655b48cf40f64388e37e8f975f"
+      resolved-ref: "74845f5173a6f0843379497d37aef36d257e40d6"
       url: "git://github.com/fgh151/dartssh.git"
     source: git
     version: "1.0.4+4"
@@ -396,7 +396,7 @@ packages:
     description:
       path: "packages/shared_preferences/shared_preferences"
       ref: HEAD
-      resolved-ref: e25698f7e4634c00a76f05dd618e303fc7ac4304
+      resolved-ref: cb465b7f5418c0554f367e5c3c9aa811d2fff3e6
       url: "git://github.com/flutter/plugins.git"
     source: git
     version: "2.0.5"
@@ -446,7 +446,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   stack_trace:
     dependency: transitive
     description:
@@ -481,7 +481,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.19"
+    version: "0.3.0"
   tweetnacl:
     dependency: transitive
     description:
@@ -525,7 +525,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.1.0"
   xdg_directories:
     dependency: transitive
     description:
@@ -548,5 +548,5 @@ packages:
     source: hosted
     version: "2.0.0"
 sdks:
-  dart: ">=2.12.0 <3.0.0"
+  dart: ">=2.13.0 <3.0.0"
   flutter: ">=2.0.0"
