@@ -28,11 +28,11 @@ jobs:
         file_name: .env
 
     - name: install dependencies
-      uses: geowatson/flutter-latest@1.0.1
+      uses: sshstudio/flutter-latest@1.0.1
       with:
         args: pub get
 
     - name: run tests
-      uses: geowatson/flutter-latest@1.0.1
+      uses: sshstudio/flutter-latest@1.0.1
       with:
         args: test
