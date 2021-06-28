@@ -2,7 +2,7 @@
 
 name: CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
@@ -28,11 +28,11 @@ jobs:
         file_name: .env
 
     - name: install dependencies
-      uses: geowatson/flutter-latest@1.0.0
+      uses: geowatson/flutter-latest@1.0.1
       with:
         args: pub get
 
     - name: run tests
-      uses: geowatson/flutter-latest@1.0.0
+      uses: geowatson/flutter-latest@1.0.1
       with:
         args: test
