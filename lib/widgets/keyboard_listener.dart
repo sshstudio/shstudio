@@ -14,17 +14,18 @@ class KeyboardListener extends StatelessWidget {
     return Actions(
 
       actions: {
-        InsertTabIntent: InsertTabAction(),
-        InsertUpIntent: InsertUpAction(),
-        CopyIntent: CopyAction(),
-        PasteIntent: PasteAction(),
+        _InsertTabIntent: _InsertTabAction(),
+        _ArrowKeyIntent: _InsertArrowAction(),
+        _CopyIntent: _CopyAction(),
+        _PasteIntent: _PasteAction(),
       },
       child: Shortcuts(
         shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.tab): InsertTabIntent(2, textController),
-          LogicalKeySet(LogicalKeyboardKey.arrowUp): InsertUpIntent(textController),
-          LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyC): CopyIntent(terminal),
-          LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyV): PasteIntent(terminal),
+          LogicalKeySet(LogicalKeyboardKey.tab): _InsertTabIntent(2, textController),
+          LogicalKeySet(LogicalKeyboardKey.arrowUp): _ArrowKeyIntent(textController),
+          LogicalKeySet(LogicalKeyboardKey.arrowLeft): _ArrowKeyIntent(textController),
+          LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyC): _CopyIntent(terminal),
+          LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyV): _PasteIntent(terminal),
         },
         child: child
       ),
@@ -32,14 +33,30 @@ class KeyboardListener extends StatelessWidget {
   }
 }
 
-class PasteIntent extends Intent {
-  const PasteIntent(this.terminal);
+class _PasteIntent extends Intent {
+  const _PasteIntent(this.terminal);
   final Terminal terminal;
 }
 
-class PasteAction extends Action {
+class _CopyIntent extends Intent {
+  const _CopyIntent(this.terminal);
+  final Terminal terminal;
+}
+
+class _InsertTabIntent extends Intent {
+  const _InsertTabIntent(this.numSpaces, this.textController);
+  final int numSpaces;
+  final TextEditingController textController;
+}
+
+class _ArrowKeyIntent extends Intent {
+  const _ArrowKeyIntent(this.textController);
+  final TextEditingController textController;
+}
+
+class _PasteAction extends Action {
   @override
-  Object invoke(covariant PasteIntent intent) {
+  Object invoke(covariant _PasteIntent intent) {
     Clipboard.getData(Clipboard.kTextPlain)
         .then((ClipboardData value) {
           print(value);
@@ -49,31 +66,19 @@ class PasteAction extends Action {
   }
 }
 
-class CopyIntent extends Intent {
-  const CopyIntent(this.terminal);
-  final Terminal terminal;
-}
-
-class CopyAction extends Action {
+class _CopyAction extends Action {
   @override
-  Object invoke(covariant CopyIntent intent) {
+  Object invoke(covariant _CopyIntent intent) {
     print(intent.terminal.getSelectedText());
     Clipboard.setData(ClipboardData(text: intent.terminal.getSelectedText()));
     return '';
   }
 }
 
-class InsertUpIntent extends Intent {
-  const InsertUpIntent(this.textController);
-  final TextEditingController textController;
-}
-
-class InsertUpAction extends Action {
+class _InsertArrowAction extends Action {
   @override
   Object invoke(covariant Intent intent) {
-
-    print('UP KEY');
-    if (intent is InsertTabIntent) {
+    if (intent is _InsertTabIntent) {
       final oldValue = intent.textController.value;
       final newComposing = TextRange.collapsed(oldValue.composing.start);
       final newSelection = TextSelection.collapsed(
@@ -96,19 +101,12 @@ class InsertUpAction extends Action {
     }
     return '';
   }
-
 }
 
-class InsertTabIntent extends Intent {
-  const InsertTabIntent(this.numSpaces, this.textController);
-  final int numSpaces;
-  final TextEditingController textController;
-}
-
-class InsertTabAction extends Action {
+class _InsertTabAction extends Action {
   @override
   Object invoke(covariant Intent intent) {
-    if (intent is InsertTabIntent) {
+    if (intent is _InsertTabIntent) {
       final oldValue = intent.textController.value;
       final newComposing = TextRange.collapsed(oldValue.composing.start);
       final newSelection = TextSelection.collapsed(
