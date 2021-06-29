@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/models/server_folder.dart';
 import 'package:sshstudio/widgets/tree_list/server_folder_item.dart';
-import 'package:sshstudio/widgets/tree_list/server_item.dart';
 
 import '../data_access.dart';
 
@@ -19,10 +17,6 @@ class TreeList extends StatelessWidget {
     for (ServerFolder folder in folders) {
       foldersList
           .add(ServerFolderItem(padding: 15, folder: folder, isRoot: false));
-      for (Server server in folder.servers) {
-        foldersList
-            .add(ServerItem(server: server, padding: 30, folderId: folder.id));
-      }
     }
 
     return Column(
