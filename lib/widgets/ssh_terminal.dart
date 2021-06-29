@@ -91,6 +91,9 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
                 child: TerminalView(
                   terminal: terminal,
                   autofocus: true,
+                  onResize: (w, h) => {
+                    server.client.setTerminalWindowSize(w, h)
+                  },
                 )
             ),
           ),
