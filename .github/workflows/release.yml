@@ -20,9 +20,10 @@ jobs:
             TARGET: 'linux'
     runs-on: ${{ matrix.os }}
 
+    env:
+      APP_VERSION: release_$(date +'%Y-%m-%d_%H-%m-%S')
+
     steps:
-      - name: Export Release Timestamp
-        run: echo "::set-env name=APP_VERSION::release_$(date +'%Y-%m-%d_%H-%m-%S')"
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Set up Java
