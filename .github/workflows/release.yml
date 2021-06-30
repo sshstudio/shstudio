@@ -17,7 +17,7 @@ jobs:
             TARGET: 'macos'
 
           - os: ubuntu-latest
-            TARGET: 'linux, apk'
+            TARGET: 'linux'
     runs-on: ${{ matrix.os }}
 
     steps:
