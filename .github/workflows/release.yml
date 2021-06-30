@@ -40,8 +40,10 @@ jobs:
       - name: Configure
         run: flutter config --enable-${{ matrix.TARGET }}-desktop
 
-      - name: build
+      - name: Dependencies
         uses: ashutoshvarma/setup-ninja@master
+
+      - name: build
         run: flutter build ${{ matrix.TARGET }}
 
       - name: Release Apps
