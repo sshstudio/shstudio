@@ -37,6 +37,9 @@ jobs:
       - name: Install pub Dependencies
         run: flutter pub get
 
+      - name: Configure
+        run: flutter config --enable-${{ matrix.TARGET }}-desktop
+
       - name: build
         run: flutter build ${{ matrix.TARGET }}
 
