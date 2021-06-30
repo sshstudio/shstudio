@@ -39,11 +39,7 @@ jobs:
         run: flutter build apk --split-per-abi
 
       - name: build
-        run: |
-          IFS = ' ' read -r -a array <<< matrix.TARGET
-          for t in ${{array[@]}} do
-          flutter build ${{$element}};
-          done
+        run: flutter build ${{ matrix.TARGET }}
 
       - name: Release Apps
         uses: ncipollo/release-action@v1
