@@ -16,8 +16,8 @@ jobs:
           - os: macos-latest
             TARGET: 'macos'
 
-          - os: ubuntu-latest
-            TARGET: 'linux'
+#          - os: ubuntu-latest
+#            TARGET: 'linux'
     runs-on: ${{ matrix.os }}
 
     env:
@@ -39,9 +39,6 @@ jobs:
 
       - name: Configure
         run: flutter config --enable-${{ matrix.TARGET }}-desktop
-
-      - name: Dependencies
-        uses: ashutoshvarma/setup-ninja@master
 
       - name: build
         run: flutter build ${{ matrix.TARGET }}
