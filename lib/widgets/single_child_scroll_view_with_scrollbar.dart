@@ -75,6 +75,7 @@ class _SingleChildScrollViewWithScrollbarState extends State<SingleChildScrollVi
             physics: widget.physics,
             controller: widget.controller,
             dragStartBehavior: widget.dragStartBehavior,
+            clipBehavior: Clip.hardEdge,
             child: Builder(
               builder: (BuildContext context) {
                 _scrollbarPainter.scrollable = Scrollable.of(context);
