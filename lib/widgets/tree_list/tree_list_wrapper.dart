@@ -8,7 +8,7 @@ class TreeListWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: SingleChildScrollViewWithScrollbar(
-        scrollbarColor: Theme.of(context).accentColor.withOpacity(0.75),
+        scrollbarColor: Theme.of(context).colorScheme.secondary.withOpacity(0.75),
         scrollbarThickness: 8.0,
         scrollDirection: Axis.horizontal,
         child: Column(

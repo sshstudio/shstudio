@@ -7,7 +7,7 @@ import 'package:dartssh/pem.dart';
 import 'package:flutter/material.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/utils/constants.dart';
-import 'package:sshstudio/widgets/keyboard_listener.dart';
+import 'package:sshstudio/widgets/keyboard_listener.dart' as kbl;
 import 'package:xterm/frontend/terminal_view.dart';
 import 'package:xterm/xterm.dart';
 
@@ -34,7 +34,7 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
-    terminal = Terminal(onInput: onInput, theme: _terminalTheme);
+    terminal = Terminal(theme: _terminalTheme, maxLines: 80);
     connect();
   }
 
@@ -82,18 +82,15 @@ class _SshTerminalState extends State<SshTerminal> with AutomaticKeepAliveClient
     return Scaffold(
       body: SafeArea(
         child: Container(
-          color: Color(_terminalTheme.background.value),
+          color: Color(_terminalTheme.background),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child:  KeyboardListener(
+            child:  kbl.KeyboardListener(
               terminal: terminal,
               textController: TextEditingController(),
                 child: TerminalView(
                   terminal: terminal,
                   autofocus: true,
-                  onResize: (w, h) => {
-                    server.client.setTerminalWindowSize(w, h)
-                  },
                 )
             ),
           ),

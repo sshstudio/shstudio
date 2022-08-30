@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sentry/sentry.dart';
 import 'package:sshstudio/models/connections.dart';
 import 'package:sshstudio/models/snippet.dart';
@@ -21,11 +21,11 @@ bool isMobile = false == isDesktop;
 
 Future<void> main() async {
 
-  await DotEnv.load(fileName: ".env");
+  await dotenv.load(fileName: ".env");
 
   await Sentry.init(
         (options) {
-      options.dsn = DotEnv.env['SENTRY_DSN'];
+      options.dsn = dotenv.env['SENTRY_DSN'];
     },
     appRunner: () => runApp(MyApp()),
   );

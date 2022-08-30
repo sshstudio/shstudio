@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:sshstudio/models/server.dart';
 import 'package:sshstudio/models/snippet.dart';
 import 'package:sshstudio/utils/constants.dart';

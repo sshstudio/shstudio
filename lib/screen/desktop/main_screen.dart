@@ -63,7 +63,7 @@ class _MainScreenDesktopState extends State<MainScreenDesktop> {
         gripSize: 3,
         view1: Container(
           child: SingleChildScrollViewWithScrollbar(
-            scrollbarColor: Theme.of(context).accentColor.withOpacity(0.75),
+            scrollbarColor: Theme.of(context).colorScheme.secondary.withOpacity(0.75),
             scrollbarThickness: 8.0,
             scrollDirection: Axis.horizontal,
             child: Column(
